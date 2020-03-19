@@ -1,6 +1,6 @@
 .venv/
 .DS_Store
-covidoff/covidoff/settings.py
+webapp/starter/static/
 
 # Created by https://www.gitignore.io
 
