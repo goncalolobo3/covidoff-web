@@ -32,6 +32,31 @@ Return values:
 ### PUT announcements/
 ### GET announcements/
 
+## Docker Setup
+
+# tl;dr
+```bash
+$ git clone git@github.com:jersobh/docker-covidoff.git
+$ docker-compose up
+```
+
+Now you can access the application at <https://localhost> and the admin site
+at <https://localhost/admin>.
+
+A project to get you started with Docker and Django. This is made to
+serve as an example for you to hack on, so I don't claim that this is the
+correct way to setup a system with Django and Docker. Thus, I advice to also
+look at other projects.
+
+Stack and version numbers used:
+
+| Name           | Version  |
+|----------------|----------|
+| Django         | 2.1.4    |
+| Nginx          | 1.15     |
+| Postgresql     | 11.1     |
+| uWSGI          | 2.0.17.1 |
+
 ## License 
 
 Open source
