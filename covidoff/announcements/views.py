@@ -1,10 +1,10 @@
 from django.views import View
 from django.http import JsonResponse
-from tracker.models import Match
-from tracker.forms import MatchForm
+from announcements.models import Announcement
+from announcements.forms import AnnouncementForm
 import json
 
-class MatchView(View):
+class AnnouncementView(View):
 
 	def put(self, request):
 
@@ -15,14 +15,13 @@ class MatchView(View):
 		except json.decoder.JSONDecodeError as ex:
 			return JsonResponse({ 'error': str(ex) }, status=400)
 
-		form = MatchForm(body)
+		form = AnnouncementForm(body)
 
 		if not form.is_valid():
 			return JsonResponse(dict(form.errors.items()), status=422)
 
-		Match.objects.create(**{
-			'matcher': form.cleaned_data['matcher'],
-			'matchee': form.cleaned_data['matchee']
+		Announcement.objects.create(**{
+			'content': form.cleaned_data['content'],
 		})
 
 		return JsonResponse({})
