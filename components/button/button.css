@@ -1,0 +1,39 @@
+.btn {
+  background-color: rgba(0, 70, 250, 1);
+  color:rgba(255,255,255, 1);
+  min-width: 200px;
+  height: 50px;
+  border-radius: 30px;
+  border:none;
+  padding: 10px;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.btn:hover {
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.alert {
+  background-color: rgba(255, 96, 61, 1);
+}
+
+.remove {
+  background-color: rgba(193, 35, 0, 1);
+}
+
+.remove i {
+  margin-left: 45%;
+  font-size: 1.4em;
+  line-height: 0;
+}
+
+.disabled {
+  background-color: rgba(218, 218, 218, 1);
+}
+
+.disabled:hover {
+  cursor: not-allowed;
+  opacity: 1;
+}
