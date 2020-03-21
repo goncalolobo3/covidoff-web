@@ -53,7 +53,9 @@ h3 {
 
 .cms-header {
   display: flex;
-  max-width: 1300px;
+  /* max-width: 1300px; */
+  padding-left: 40px;
+  padding-right: 40px;
   margin: 0 auto;
   padding-top: 75px;
 }
@@ -63,7 +65,9 @@ h3 {
 }
 
 .cms-content {
-  max-width: 1300px;
+  /* max-width: 1300px; */
+  padding-left: 40px;
+  padding-right: 40px;
   margin: 0 auto;
 }
 

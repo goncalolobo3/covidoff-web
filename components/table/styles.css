@@ -13,6 +13,10 @@ th {
   font-weight: 600;
 }
 
+th:first-child {
+  padding-left: 0;
+}
+
 /* Body */
 
 tbody tr:nth-of-type(2n) {
@@ -25,6 +29,10 @@ td {
 
 td:first-child {
   font-weight: 600;
+  padding-left: 0;
+}
+td.no-wrap {
+  white-space: nowrap;
 }
 
 /* Custom classes */
