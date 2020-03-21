@@ -1,0 +1,42 @@
+html {
+  max-width: 1200px;
+}
+
+body {
+  width: 100%;
+}
+
+table {
+  width: 99%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+/* Header */
+
+th {
+  white-space: nowrap;
+  padding: 28px;
+  border-bottom: 1px rgb(220, 220, 220) solid;
+  font-weight: 600;
+}
+
+/* Body */
+
+tbody tr:nth-of-type(2n) {
+  background-color: rgb(243, 243, 243);
+}
+
+td {
+  padding: 28px;
+}
+
+td:first-child {
+  font-weight: 600;
+}
+
+/* Custom classes */
+
+.cell-expand {
+  width: 100%;
+}
