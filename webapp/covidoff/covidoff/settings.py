@@ -15,27 +15,25 @@ import os
 
 COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE = 32768
 
-COVIDOFF_HEALTHCARE_DEPLOY = False
-COVIDOFF_GOVERNMENT_DEPLOY = True
+COVIDOFF_HEALTHCARE_DEPLOY = True
+COVIDOFF_GOVERNMENT_DEPLOY = False
+
+if COVIDOFF_GOVERNMENT_DEPLOY == COVIDOFF_HEALTHCARE_DEPLOY:
+    raise ImproperlyConfigured("Choose either COVIDOFF_HEALTHCARE_DEPLOY or COVIDOFF_GOVERNMENT_DEPLOY in the settings file, both cannot be set")
 
 COVIDOFF_MESSAGES_PER_PAGE = 3 # 25
 COVIDOFF_USERS_PER_PAGE = 3 # 25
 
 LOGIN_URL = '/account/login/'
-LOGIN_REDIRECT_URL = '/broadcast/'
 
-if COVIDOFF_GOVERNMENT_DEPLOY == COVIDOFF_HEALTHCARE_DEPLOY:
-    raise ImproperlyConfigured("Choose either COVIDOFF_HEALTHCARE_DEPLOY or COVIDOFF_GOVERNMENT_DEPLOY in the settings file, both cannot be set")
+if COVIDOFF_HEALTHCARE_DEPLOY:
+    LOGIN_REDIRECT_URL = '/tracker/'
+
+elif COVIDOFF_GOVERNMENT_DEPLOY:
+    LOGIN_REDIRECT_URL = '/broadcast/'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    #os.path.join(BASE_DIR, "static"),
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -59,11 +57,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'qr_code',
     'broadcast',
-
-    #'announcements',
-    #'tracker',
-    'access'
+    'access',
+    'tracker',
 ]
 
 MIDDLEWARE = [
@@ -145,3 +142,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = ''
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]

@@ -1,14 +1,18 @@
 from django import forms
+from tracker.models import Device
+
+class DeviceForm(forms.ModelForm):
+	
+	class Meta:
+		model = Device
+		fields = ['uid']
 
 class MatchForm(forms.Form):
 
-	matcher = forms.CharField(max_length=255, required=True)
-	matchee = forms.CharField(max_length=255, required=True)
-	
+	matcher = forms.CharField(max_length=256, required=True)
+	matchee = forms.CharField(max_length=256, required=True)
 
-	# Timestamps
-	# Metafield
+	matcher_meta = forms.CharField(max_length=2048, required=True)
+	matchee_meta = forms.CharField(max_length=2048, required=True)	
 
-	ID					Incremental
-	Timestamps			Server
-	
+	timestamp = forms.DateTimeField()

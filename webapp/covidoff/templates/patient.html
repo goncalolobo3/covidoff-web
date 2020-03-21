@@ -1,0 +1,39 @@
+{% load qr_code %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+
+		<link rel="stylesheet" type="text/css" href="{% static 'css/general.css' %}">
+	</head>
+	<body>
+
+		<a href="{% static 'css/general.css' %}">css</a>
+
+		<h1>Patient search</h1>
+
+		<form action="" method="GET">
+
+			<input name="device" type="text">
+			<button type="submit">Submit</button>
+
+		</form>
+
+		<!--
+		t or T: tiny (value: 6)
+		s or S: small (value: 12)
+		m or M: medium (value: 18)
+		l or L: large (value: 30)
+		h or H: huge (value: 48)
+		-->
+		{% qr_from_text "{{ qrinfo }}" size="M" %}
+
+
+
+		<h1>Patient's device</h1>
+
+	</body>
+
+</html>

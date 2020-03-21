@@ -21,17 +21,20 @@ from django.views.generic import RedirectView
 urlpatterns = [
     
     path('account/', include('access.urls')),
-    
-    #path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
+
     #path('tracker/', include('tracker.urls')),
-    
 ]
 
 # Pedir chave pública
 
-# # Healtcare-speciifc URLs
-# if settings.COVIDOFF_HEALTHCARE_DEPLOY:
-#     pass
+# Healtcare-speciifc URLs
+if settings.COVIDOFF_HEALTHCARE_DEPLOY:
+    
+    urlpatterns += [
+        path('', RedirectView.as_view(url=settings.LOGIN_REDIRECT_URL, permanent=False)),
+        path('tracker/', include('tracker.urls'))
+    ]
 
 # Government-speciifc URLs
 if settings.COVIDOFF_GOVERNMENT_DEPLOY:

@@ -1,6 +1,7 @@
 from django.urls import path
-from tracker.views import MatchView
+from django.contrib.auth.decorators import login_required
+from tracker.views import PatientView
 
 urlpatterns = [
-	path('', MatchView.as_view()),
+	path('', login_required(PatientView.as_view()), name='patient'),
 ]

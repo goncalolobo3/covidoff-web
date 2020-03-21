@@ -8,12 +8,6 @@ until python3 /srv/config/database-check.py; do
     sleep 5; echo "*** Waiting for postgres container ..."
 done
 
-echo "!!!!!!!!!!!!!!!!!"
-echo "!!!!!!!!!!!!!!!!!"
-echo "!!!!!!!!!!!!!!!!!"
-echo "!!!!!!!!!!!!!!!!!"
-echo "${DJANGO_PROJECT_NAME}"
-
 #####
 # Django setup
 #####
