@@ -1,0 +1,41 @@
+
+<h1>Broadcast messages</h1>
+
+<a href="{% url 'broadcast_log' %}">Broadcast log</a>
+
+<form action="{% url 'broadcast' %}" method="POST">
+
+	<!-- ------------------------------------------------------------------- -->
+	<!-- Note: this area is sensitive, since it sends messages to all users. -->
+	<!-- We should add some syntatic salt; e.g., a confirmation box asking   -->
+	<!-- wether the user is sure to send, otherwise they could easily send   -->
+	<!-- trash messages.                                                     -->
+	<!-- ------------------------------------------------------------------- -->
+	<textarea name="text"></textarea>
+	<button>Send</button>
+
+</form>
+
+
+
+
+
+{% for field, field_errors in errors %}
+
+	<div>
+		{{field}}:
+
+		{% for err in field_errors %}
+			{{err}}
+		{% endfor %}
+	</div>
+
+{% endfor %}
+
+
+
+
+
+<form action="{% url 'logout' %}" method="POST">
+	<button type="submit">Logout</button>
+</form>

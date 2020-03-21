@@ -1,0 +1,38 @@
+
+<h1>Broadcast log</h1>
+
+<div>
+	<a href="{% url 'broadcast' %}">New broadcast</a>
+</div>
+
+<div>
+
+{% for message in page %}
+	<div>
+		{{ message.author.email }}
+    	{{ message.text }}
+    	{{ message.creation_date }}
+    </div>
+    
+{% endfor %}
+
+
+{% if page.has_previous %}
+	<a href="?page=1">&laquo; first</a>
+	<a href="?page={{ page.previous_page_number }}">previous</a>
+{% endif %}
+
+Page {{ page.number }} of {{ page.paginator.num_pages }}.
+
+{% if page.has_next %}
+	<a href="?page={{ page.next_page_number }}">next</a>
+	<a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
+{% endif %}
+
+
+</div>
+
+<form action="{% url 'logout' %}" method="POST">
+	<button type="submit">Logout</button>
+</form>
+

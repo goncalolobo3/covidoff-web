@@ -10,7 +10,21 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+from django.core.exceptions import ImproperlyConfigured
 import os
+
+COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE = 32768
+
+COVIDOFF_HEALTHCARE_DEPLOY = False
+COVIDOFF_GOVERNMENT_DEPLOY = True
+
+COVIDOFF_MESSAGES_PER_PAGE = 3 # 25
+
+LOGIN_URL = '/account/login/'
+LOGIN_REDIRECT_URL = '/broadcast/'
+
+if COVIDOFF_GOVERNMENT_DEPLOY == COVIDOFF_HEALTHCARE_DEPLOY:
+    raise ImproperlyConfigured("Choose either COVIDOFF_HEALTHCARE_DEPLOY or COVIDOFF_GOVERNMENT_DEPLOY in the settings file, both cannot be set")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,6 +47,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'access.User'
 
 # Application definition
 
@@ -43,8 +58,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'announcements',
-    'tracker'
+    'broadcast',
+
+    #'announcements',
+    #'tracker',
+    'access'
 ]
 
 MIDDLEWARE = [
@@ -62,7 +80,7 @@ ROOT_URLCONF = 'covidoff.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

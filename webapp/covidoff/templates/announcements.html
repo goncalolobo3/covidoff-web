@@ -1,0 +1,20 @@
+<!--
+
+	GET 	/announcements/			Shows this page.
+	POST 	/announcements/			Broadcasts an announcement.
+
+-->
+
+
+<form action="{% url announcements %}" method="POST">
+
+	<textarea></textarea>
+	<button>Send alert</button>
+
+</form>
+
+
+
+<form action="{% url 'logout' %}" method="POST">
+	<button type="submit">Logout</button>
+</form>

@@ -10,6 +10,7 @@ class AnnouncementView(View):
 
 	def put(self, request):
 
+		# TODO not JSON
 		try:
 			body = request.body.decode('utf-8')
 			body = json.loads(body)

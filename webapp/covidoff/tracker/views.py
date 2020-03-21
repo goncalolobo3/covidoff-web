@@ -8,6 +8,8 @@ class MatchView(View):
 
 	def put(self, request):
 
+		# TODO Accept in batches
+
 		try:
 			body = request.body.decode('utf-8')
 			body = json.loads(body)
@@ -26,4 +28,3 @@ class MatchView(View):
 		})
 
 		return JsonResponse({})
-
