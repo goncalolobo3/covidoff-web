@@ -1,0 +1,36 @@
+.users-panel h1 {
+  margin-bottom: 60px;
+  float: left;
+}
+
+.users-panel .user-invite-block {
+  float: right;
+  position: relative;
+}
+
+.users-panel .user-invite-block .create-user-input input {
+  border: 1px solid #DADADA;
+  border-radius: 28px;
+  padding: 13px 250px 13px 16px;
+}
+
+.users-panel .user-invite-block .user-invite-title {
+  position: absolute;
+  right: 500px;
+  white-space: nowrap;
+  line-height: 1em;
+}
+
+.users-panel .user-invite-block .create-user-input {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 0;
+}
+
+.users-panel .user-invite-block .btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
