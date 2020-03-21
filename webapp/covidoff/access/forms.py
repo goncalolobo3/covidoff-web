@@ -8,4 +8,8 @@ class LoginForm(forms.Form):
 class RecoverForm(forms.Form):
 
 	email = forms.EmailField()
+
+class UserCreationForm(forms.Form):
+
+	email = forms.EmailField()
 	

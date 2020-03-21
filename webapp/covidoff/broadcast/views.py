@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from broadcast.models import Message
 from broadcast.forms import MessageForm
+from broadcast.forms import UserCreationForm
 import logging
 
 logger = logging.getLogger(__name__)
@@ -42,12 +43,22 @@ class BroadcastLogView(TemplateView):
 
 	def get(self, request):
 
-		messages = Message.objects.all()
+		return render(request, self.template_name, {
+			'page': self._paginator(request)
+		})
+
+	def post(self, request):
+
+		return render(request, self.template_name, {
+			'page': self._paginator(request),
+		})
+
+	def _paginator(self, request):
+
+		messages = Message.objects.all().order_by('-creation_date')
 		paginator = Paginator(messages, getattr(settings, 'COVIDOFF_MESSAGES_PER_PAGE', 25))
 
 		page_number = request.GET.get('page')
 		page_object = paginator.get_page(page_number)
 
-		return render(request, self.template_name, {
-			'page': page_object
-		})
+		return page_object

@@ -9,8 +9,12 @@ from django.core.paginator import Paginator
 from django.utils.translation import gettext as _
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
+from django.db import IntegrityError
 from access.forms import LoginForm
 from access.forms import RecoverForm
+from access.forms import UserCreationForm
 from access.models import RecoveryTicket
 import logging
 
@@ -102,10 +106,52 @@ class UsersView(TemplateView):
 	template_name = 'users.html'
 
 	def get(self, request):
-		pass
+		
+		return render(request, self.template_name, {
+			'page': self._paginator(request)
+		})
 
+	@method_decorator(user_passes_test(lambda u: u.is_superuser))
 	def post(self, request):
-		pass
 
-	def delete(self, request):
+		form = UserCreationForm(request.POST)
+
+		if not form.is_valid():
+
+			return render(request, self.template_name, {
+				'errors': form.errors.items(),
+				'page': self._paginator(request)
+			}, status=422)
+
+		user, created = get_user_model().objects.get_or_create(**{
+			'email': form.cleaned_data['email'],
+		})
+
+		if created:
+
+			user.is_active = False
+			user.save()
+
+		# New or resend invite
+		if created or not user.is_active:
+
+			self._send_invite(user)
+
+		return render(request, self.template_name, {
+			'page': self._paginator(request)
+		})
+
+	def _paginator(self, request):
+
+		users = get_user_model().objects.all().order_by('email')
+		paginator = Paginator(users, getattr(settings, 'COVIDOFF_USERS_PER_PAGE', 25))
+
+		page_number = request.GET.get('page')
+		page_object = paginator.get_page(page_number)
+
+		return page_object
+
+	def _send_invite(self, user):
+
+		# TODO send invite email to user.email
 		pass

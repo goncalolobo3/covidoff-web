@@ -1,11 +1,67 @@
 
+<h1>Users</h1>
+
+<div>
+	<a href="{% url 'broadcast' %}">New broadcast</a>
+	<a href="{% url 'broadcast_log' %}">Broadcast log</a>
+</div>
+
+<form action="{% url 'users' %}" method="POST">
+	<input name="email" type="email">
+	<button type="submit">Invite</button>
+</form>
+
+{% if user.is_superuser %}
+	{% if invitation %}
+		Invitation sent
+	{% endif %}
 
 
+	{% for field, field_errors in errors %}
+
+		<div>
+			{{field}}:
+
+			{% for err in field_errors %}
+				{{err}}
+			{% endfor %}
+		</div>
+
+	{% endfor %}
+
+{% endif %}
 
 
+<div>
+
+{% for user in page %}
+	<div>
+		{{ user.email }}
+		{{ user.is_superuser }}
+		{{ user.is_staff }}
+		{{ user.last_login }}
+		{{ user.is_active }}
+    </div>
+    
+{% endfor %}
 
 
+{% if page.has_previous %}
+	<a href="?page=1">&laquo; first</a>
+	<a href="?page={{ page.previous_page_number }}">previous</a>
+{% endif %}
+
+Page {{ page.number }} of {{ page.paginator.num_pages }}.
+
+{% if page.has_next %}
+	<a href="?page={{ page.next_page_number }}">next</a>
+	<a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
+{% endif %}
+
+
+</div>
 
 <form action="{% url 'logout' %}" method="POST">
 	<button type="submit">Logout</button>
 </form>
+
