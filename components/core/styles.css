@@ -1,3 +1,6 @@
+@import url("../button/styles.css");
+@import url("../table/styles.css");
+
 html {
   box-sizing: border-box;
   font-size: 16px;
@@ -107,4 +110,10 @@ h3 {
   padding: 64px;
   border-radius: 24px;
   background-color: #fff;
+}
+
+/* DUMMY CLASSES */
+.buttons {
+  display: flex;
+  justify-content: space-around;
 }
