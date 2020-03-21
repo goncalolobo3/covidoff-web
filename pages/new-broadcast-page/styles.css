@@ -1,0 +1,16 @@
+.new-broadcast-panel h1 {
+  margin-bottom: 60px;
+}
+
+.new-broadcast-panel .broadcast-actions {
+  margin-top: 180px;
+  text-align: right;
+}
+
+.new-broadcast-panel .broadcast-actions .btn{
+  margin-left: 20px;
+}
+
+.new-broadcast-panel textarea {
+  min-height: 400px;
+}

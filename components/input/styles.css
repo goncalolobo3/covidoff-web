@@ -1,33 +1,46 @@
 .input-field input {
-    padding: 16px;
-    font-size: 20px;
-    border: 1px solid #0046FA;
-    box-sizing: border-box;
-    border-radius: 5px;
-  }
-  
-  .input-field label {
-    font-size: 20px;
-    line-height: 1.2em;
-    display: block;
-    margin-bottom: 16px;
-  }
-  
-  .input-field input.full-width {
-    width: 100%;
-  }
-  
-  .input-field.iconed {
-    position: relative;
-  }
-  
-  .input-field.iconed input {
-    padding-left: 70px;
-  }
-  
-  .input-field.iconed i {
-    position: absolute;
-    left: 20px;
-    bottom: 15px;
-    font-size: 24px;
-  }
+  padding: 16px;
+  font-size: 20px;
+  border: 1px solid #0046FA;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.input-field label {
+  font-size: 20px;
+  line-height: 1.2em;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.input-field input.full-width {
+  width: 100%;
+}
+
+.input-field.iconed {
+  position: relative;
+}
+
+.input-field.iconed input {
+  padding-left: 70px;
+}
+
+.input-field.iconed i {
+  position: absolute;
+  left: 20px;
+  bottom: 15px;
+  font-size: 24px;
+}
+
+textarea {
+  border: 1px solid #DADADA;
+  box-sizing: border-box;
+  border-radius: 16px;
+  width: 100%;
+  min-height: 100px;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 32px;
+  color: #000;
+  padding: 48px;
+}
