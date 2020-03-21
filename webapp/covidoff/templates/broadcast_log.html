@@ -1,39 +1,66 @@
 
-<h1>Broadcast log</h1>
+{% load static %}
+{% static 'css/general.css' %}
 
-<div>
-	<a href="{% url 'broadcast' %}">New broadcast</a>
-	<a href="{% url 'users' %}">User list</a>
-</div>
-
-<div>
-
-{% for message in page %}
-	<div>
-		{{ message.author.email }}
-    	{{ message.text }}
-    	{{ message.creation_date }}
+<div class='cms-wrapper'>
+  <div class='cms-header'>
+    <div class="cms-nav-left">
+      <div class="cms-nav-item selected">
+        <div class="cms-nav-item-text">
+          <a href="{% url 'broadcast' %}">New broadcast</a>
+        </div>
+      </div>
+      <div class="cms-nav-item">
+        <div class="cms-nav-item-text">
+          <a href="{% url 'users' %}">User list</a>
+        </div>
+      </div>
     </div>
-    
-{% endfor %}
+    <div class="cms-nav-title">CORONA | APP</div>
+    <div class="cms-nav-right">
+      <div class="cms-avatar">
+        <img src='http://placehold.it/100x100'/>
+      </div>
+    </div>
+  </div>
+  <div class='cms-body'>
+    <div class='cms-content'>
+      <div class="panel broadcast-logs-panel">
+        <h1>Broadcast Log</h1>
+        <button class="btn add-new-alert">Add New Alert</button>
+        <table>
+          <thead>
+            <tr>
+              <th>Sender profile</th>
+              <th class="cell-expand">Message content</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for message in page %}
+              <tr>
+                <td class='no-wrap'>{{ message.author.email }}</td>
+                <td>{{ message.text }}</td>
+                <td class='no-wrap'>{{ message.creation_date }}</td>
+              </tr>                
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="table-pagination">
+          {% if page.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page.previous_page_number }}">previous</a>
+          {% endif %}
 
+          Page {{ page.number }} of {{ page.paginator.num_pages }}.
 
-{% if page.has_previous %}
-	<a href="?page=1">&laquo; first</a>
-	<a href="?page={{ page.previous_page_number }}">previous</a>
-{% endif %}
-
-Page {{ page.number }} of {{ page.paginator.num_pages }}.
-
-{% if page.has_next %}
-	<a href="?page={{ page.next_page_number }}">next</a>
-	<a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
-{% endif %}
-
-
+          {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}">next</a>
+            <a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<form action="{% url 'logout' %}" method="POST">
-	<button type="submit">Logout</button>
-</form>
 

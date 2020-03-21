@@ -1,42 +1,61 @@
 
-<h1>Broadcast messages</h1>
+{% load static %}
+{% static 'css/general.css' %}
 
-<a href="{% url 'broadcast_log' %}">Broadcast log</a>
-<a href="{% url 'users' %}">User list</a>
+<div class='cms-wrapper'>
+  <div class='cms-header'>
+    <div class="cms-nav-left">
+      <div class="cms-nav-item selected">
+        <div class="cms-nav-item-text">
+          <a href="{% url 'broadcast' %}">New broadcast</a>
+        </div>
+      </div>
+      <div class="cms-nav-item">
+        <div class="cms-nav-item-text">
+          <a href="{% url 'users' %}">User list</a>
+        </div>
+      </div>
+    </div>
+    <div class="cms-nav-title">CORONA | APP</div>
+    <div class="cms-nav-right">
+      <div class="cms-avatar">
+        <img src='http://placehold.it/100x100'/>
+      </div>
+    </div>
+  </div>
+  <div class='cms-body'>
+    <div class='cms-content'>
+      <div class="panel new-broadcast-panel">
+        <h1>New Alert Broadcast</h1>
+        <form action="{% url 'broadcast' %}" method="POST">
 
-<form action="{% url 'broadcast' %}" method="POST">
+          <!-- ------------------------------------------------------------------- -->
+          <!-- Note: this area is sensitive, since it sends messages to all users. -->
+          <!-- We should add some syntatic salt; e.g., a confirmation box asking   -->
+          <!-- wether the user is sure to send, otherwise they could easily send   -->
+          <!-- trash messages.                                                     -->
+          <!-- ------------------------------------------------------------------- -->
+          <textarea>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue orci aliquet sodales lobortis. Proin sollicitudin placerat sem. Donec sit amet nulla non tortor cursus fermentum eget vitae est. Praesent posuere interdum ante. Phasellus facilisis nibh in odio mollis, nec facilisis elit viverra. Cras ultricies, urna in malesuada aliquam, ligula enim laoreet massa, eleifend eleifend sem magna at massa. Sed vel erat at velit fermentum imperdiet. Sed sit amet pharetra tortor, gravida ullamcorper magna. Mauris pharetra erat risus. Donec vulputate lorem sed metus pellentesque, sit amet dignissim lacus egestas. Praesent velit lacus, commodo vel laoreet non, mollis at ligula. Integer fringilla justo porttitor, elementum sapien eget, tincidunt augue. Curabitur maximus risus at enim dictum tincidunt semper eu enim. Phasellus placerat nisi arcu, eu rutrum dui ultrices eu. Ut metus felis, finibus sit amet egestas et, finibus vel augue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec luctus vel risus vitae luctus. Sed posuere at magna in facilisis. Curabitur vitae lorem vel mi pulvinar fermentum dignissim sed quam. Quisque facilisis tristique magna nec tempor. Nullam consequat ullamcorper augue, vel tincidunt turpis pretium et. Sed fringilla maximus rhoncus. Suspendisse sapien lorem, porta ut vestibulum id, fermentum a dolor. Praesent fringilla ut mauris non feugiat. Aliquam consectetur metus non leo finibus, ornare porta risus finibus.
+          </textarea>
+          <div class="broadcast-actions">
+            <button class="btn cancel transparent">Cancel</button>
+            <button type="submit" class="btn send-new-alert">Add New Alert</button>
+          </div>
+          
+        </form>
+        
+        {% for field, field_errors in errors %}
+          <div>
+            {{field}}:
 
-	<!-- ------------------------------------------------------------------- -->
-	<!-- Note: this area is sensitive, since it sends messages to all users. -->
-	<!-- We should add some syntatic salt; e.g., a confirmation box asking   -->
-	<!-- wether the user is sure to send, otherwise they could easily send   -->
-	<!-- trash messages.                                                     -->
-	<!-- ------------------------------------------------------------------- -->
-	<textarea name="text"></textarea>
-	<button type="submit">Send</button>
-
-</form>
-
-
-
-
-
-{% for field, field_errors in errors %}
-
-	<div>
-		{{field}}:
-
-		{% for err in field_errors %}
-			{{err}}
-		{% endfor %}
-	</div>
-
-{% endfor %}
-
-
-
-
-
-<form action="{% url 'logout' %}" method="POST">
-	<button type="submit">Logout</button>
-</form>
+            {% for err in field_errors %}
+              {{err}}
+            {% endfor %}
+          </div>
+        {% endfor %}
+        
+      </div>
+    </div>
+  </div>
+</div>

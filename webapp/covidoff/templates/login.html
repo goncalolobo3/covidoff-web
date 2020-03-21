@@ -1,35 +1,51 @@
-<h1>Login</h1>
 
-<form action="{% url 'login' %}" method="POST">
+{% load static %}
+{% static 'css/general.css' %}
 
-	<div>
-		Email
-		<input name="email" type="email">
-	</div>
+<div class='cms-wrapper'>
+  <div class='cms-header'>
+    <div class="cms-nav-left">
+    </div>
+    <div class="cms-nav-title">CORONA | APP</div>
+    <div class="cms-nav-right">
+    </div>
+  </div>
+  <div class='cms-body'>
+    <div class='cms-content'>
+      <div class="panel login-panel">
+        <h2>Login</h2>
+        <form action="{% url 'login' %}" method="POST">
+          <div class='login-fields'>
+            <div class='login-username input-field iconed'>
+              <label>Username</label>
+              <i class="fa fa-user"></i>
+              <input type="email" name="email" placeholder="email@gov.co" class="full-width" />
+            </div>
+            <div class='login-password input-field iconed'>
+              <label>Password</label>
+              <i class="fa fa-lock"></i>
+              <input type="password" name="password" placeholder="email@gov.co" class="full-width" />
+            </div>
+          </div>
+          <div class="user-buttons">
+            <button type="submit" class="btn">Login</button>
+          </div>
+        </form>
+        <!-- ---------------------------------------------------------------- -->
+        <!-- Note: if both email and password are given, but they don't match -->
+        <!-- any user in the system, then {{field}} will be an empty string.  -->
+        <!-- ---------------------------------------------------------------- -->
+        {% for field, field_errors in errors %}
+          <div>
+            {{field}}:
 
-	<div>
-		Password
-		<input name="password" type="password">
-	</div>
+            {% for err in field_errors %}
+              {{err}}
+            {% endfor %}
+          </div>
+        {% endfor %}
 
-	<button type="submit">Login</button>
-
-</form>
-
-<a href="{% url 'recover_password' %}">Forgot password?</a>
-
-<!-- ---------------------------------------------------------------- -->
-<!-- Note: if both email and password are given, but they don't match -->
-<!-- any user in the system, then {{field}} will be an empty string.  -->
-<!-- ---------------------------------------------------------------- -->
-{% for field, field_errors in errors %}
-
-	<div>
-		{{field}}:
-
-		{% for err in field_errors %}
-			{{err}}
-		{% endfor %}
-	</div>
-
-{% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
