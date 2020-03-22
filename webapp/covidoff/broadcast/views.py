@@ -47,12 +47,6 @@ class BroadcastLogView(TemplateView):
 			'page': self._paginator(request)
 		})
 
-	def post(self, request):
-
-		return render(request, self.template_name, {
-			'page': self._paginator(request),
-		})
-
 	def _paginator(self, request):
 
 		messages = Message.objects.all().order_by('-creation_date')

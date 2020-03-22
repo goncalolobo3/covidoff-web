@@ -15,8 +15,8 @@ import os
 
 COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE = 32768
 
-COVIDOFF_HEALTHCARE_DEPLOY = True
-COVIDOFF_GOVERNMENT_DEPLOY = False
+COVIDOFF_HEALTHCARE_DEPLOY = False
+COVIDOFF_GOVERNMENT_DEPLOY = not COVIDOFF_HEALTHCARE_DEPLOY
 
 if COVIDOFF_GOVERNMENT_DEPLOY == COVIDOFF_HEALTHCARE_DEPLOY:
     raise ImproperlyConfigured("Choose either COVIDOFF_HEALTHCARE_DEPLOY or COVIDOFF_GOVERNMENT_DEPLOY in the settings file, both cannot be set")
@@ -129,6 +129,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = (
+    ('en', 'English'),
+    ('pt', 'Portugês'),
+    ('es', 'Español')
+)
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -142,8 +148,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
 ]

@@ -7,16 +7,15 @@
 		<title></title>
 
 		<link rel="stylesheet" type="text/css" href="{% static 'css/general.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'admin/css/dashboard.css' %}">
 	</head>
 	<body>
 
-		<a href="{% static 'css/general.css' %}">css</a>
-
 		<h1>Patient search</h1>
 
-		<form action="" method="GET">
+		<form action="{% url 'patient' %}" method="GET">
 
-			<input name="device" type="text">
+			<input name="uid" type="text" value="{{ device.uid }}">
 			<button type="submit">Submit</button>
 
 		</form>
@@ -29,8 +28,6 @@
 		h or H: huge (value: 48)
 		-->
 		{% qr_from_text "{{ qrinfo }}" size="M" %}
-
-
 
 		<h1>Patient's device</h1>
 

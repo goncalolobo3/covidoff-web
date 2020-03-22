@@ -22,8 +22,6 @@ urlpatterns = [
     
     path('account/', include('access.urls')),
     path('admin/', admin.site.urls),
-
-    #path('tracker/', include('tracker.urls')),
 ]
 
 # Pedir chave pública
