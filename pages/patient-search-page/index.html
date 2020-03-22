@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="https://fonts.googleapis.com/css?family=Archivo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../components/core/styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>CMS: Components</title>
+  </head>
+  <body>
+    <div id="root">
+      <div class='cms-wrapper'>
+        <div class='cms-header'>
+          <div class="cms-nav-left">
+            <div class="cms-nav-item selected">
+              <div class="cms-nav-item-text">Patient Search</div>
+            </div>
+          </div>
+          <div class="cms-nav-title">CORONA | APP</div>
+          <div class="cms-nav-right">
+            <div class="cms-avatar">
+              <img src='http://placehold.it/100x100'/>
+            </div>
+          </div>
+        </div>
+        <div class='cms-body'>
+          <div class='cms-content'>
+            <div class="patient-search-wrapper">
+              <div class="patient-search-panel panel">
+                <h2>Patient Search</h2>
+                <div class="patient-id">
+                  <div>Enter Patient's DeviceID</div>
+                  <div class='input-field'>
+                    <input type="text" placeholder="ID" class="full-width" />
+                  </div>
+                </div>
+                <div class="separator"></div>
+                <div class="patient-search-qrcode">
+                  <div>Scan QR Code</div>
+                  <img src="../../assets/qrcode.svg" />
+                </div>
+                <div class="patient-search-buttons">
+                  <button class="btn add-new-alert">Submit</button>
+                </div>
+              </div>
+              <div class="patient-results-panel panel">
+                <h2>Patient's Device</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Patient's Device ID</th>
+                      <th class="cell-expand">Last Updated</th>
+                      <th>COVID-19 Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class='no-wrap'>SDS6578SSAA</td>
+                      <td class='no-wrap'>10:00 07-03-2020</td>
+                      <td class='no-wrap status-td'>
+                        <div class='status positive'>Positive</div>
+                        <div class="status-dropdown">
+                          <div class='status positive selected'>Positive</div>
+                          <div class='status negative'>Negative</div>
+                          <div class='status recovered'>Recovered</div>
+                        </div>
+                      </td>
+                      <td><i class="fa fa-pencil"></i></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="patient-results-actions">
+                  <strong>Alert people encontered within (days)</strong>
+                  <div class="days-input input-field">
+                    <input type="text" placeholder="0" />
+                  </div>
+                  <div class="alert-button">
+                    <button class="btn remove">Alert</button>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,119 @@
+.patient-search-wrapper {
+  display: flex;
+}
+
+.patient-search-wrapper h2 {
+  font-size: 40px;
+  margin-bottom: 60px;
+}
+
+.patient-search-wrapper .patient-search-panel {
+  width: 500px;
+  padding: 30px 70px 70px;
+  margin-right: 20px;
+}
+
+.patient-search-wrapper .patient-results-panel {
+  padding: 30px 70px 70px;
+  flex: 1;
+}
+
+.patient-search-panel {
+  text-align: center;
+}
+
+.patient-search-panel .patient-search-qrcode {
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+.patient-search-panel .patient-id .input-field input{
+  border: 1px solid #DADADA;
+  border-radius: 16px;
+  font-size: 16px;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 20px 0 60px;
+}
+
+.patient-results-panel .status {
+  position: relative;
+  padding-left: 30px;
+}
+
+.patient-results-panel .status:before {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 7px;
+}
+
+.status.positive:before {
+  background-color: #C12300;
+}
+.status.negative:before {
+  background-color: #A1DF53;
+}
+.status.recovered:before {
+  background-color: #6BB8FF;
+}
+
+.patient-results-panel .status-td {
+  position: relative;
+}
+
+.status-dropdown {
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  padding: 22px 22px 10px 22px;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  display: none;
+}
+
+.status-dropdown.visible {
+  display: block;
+}
+
+.status-dropdown .status {
+  opacity: .5;
+  margin-bottom: 7px;
+}
+
+.status-dropdown .status.selected {
+  opacity: 1;
+}
+
+.patient-results-panel i.fa {
+  opacity: .5;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.patient-results-actions {
+  border: 1px solid #DADADA;
+  border-radius: 24px;
+  padding: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.patient-results-actions input {
+  border: 1px solid #DADADA;
+  border-radius: 16px;
+  font-size: 16px;
+  margin: 0 20px;
+  max-width: 80px;
+  text-align: center;
+}
+
+.patient-results-actions .alert-button {
+  flex: 1;
+  text-align: right;
+}
