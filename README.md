@@ -4,59 +4,66 @@ This repository contains the source code for the Web components of the covidoff 
 
 ## Getting Started
 
+Run docker and create an admin user. Use the credentials from that user to login.
+
+```
+docker-compose up
+docker exec -it <container_id> python3 /srv/covidoff/manage.py createsuperuser
+```
+Now you can access the application at <https://localhost> and the admin site at <https://localhost/admin>.
+
+The implementation either shows government- or healthcare-related views, depending on the settings. In order to switch between the two, change `COVIDOFF_HEALTHCARE_DEPLOY` and `COVIDOFF_GOVERNMENT_DEPLOY` to `True` or `False`, depending on which should be enabled. Notice that if the two are equal (e.g. both `True` or both `False`), the server will refuse to start.
+
 ## Server API
 
-| Path           | Verb | Description                                      |
-|----------------|------|--------------------------------------------------|
-| tracker/       | PUT  | Register an encounter between two devices.       |
-| announcements/ | PUT  | Register and broadcast a message to all devices. |
-| announcements/ | GET  | List previous announcements.                     |
+The server API is separated in three components:
 
-### PUT tracker/
+* General purpose: views shared by all actors
+* Government: views specific for governamental entities
+* Healthcare: views specific for healthcare professionals
 
-Endpoint for registering encounters (matches) between devices. It accepts and returns `application/json` content type. The input is a JSON object with the following key-value attributes:
+| Path                      | Verb | Login required | Endpoint                                                                  |
+|---------------------------|------|----------------|---------------------------------------------------------------------------|
+| /                         | GET  | No             | Redirects to the initial page, or the login page, if no session is active |
+| admin/                    | GET  | No             | Shows the admin page                                                      |
+| account/login/            | GET  | No             | Displays the login form                                                   |
+| account/login/            | POST | No             | Submits a login form                                                      |
+| account/logout/           | POST | No             | Logout, if a session is active                                            |
+| account/recover/          | GET  | No             | Shows password recovery form                                              |
+| account/recover/          | POST | No             | Submit a password recovery form                                           |
+| account/recover/ok/       | GET  | No             | Displays a confirmation for a successful password recovery request        |
+| account/recover/callback/ | GET  | No             | Password recovery email callback                                          |
+| account/users/            | GET  | Yes            | Lists users, paginated                                                    |
+| account/users/            | POST | Yes            | Send an invitation to a new user                                          |
 
-| Key      | Type   | Description                |
-|----------|--------|----------------------------|
-| matcher  | String | Device reporting the match |
-| matchee  | String | Device being matched       |
+All views return HTML, except `POST tracker/match/`, which both accepts and returns `application/json`. Currently, all views are exempt from CSRF verification, but only `POST tracker/match/` should be, since it's meant to accept AJAX requests.
 
-Return values:
+### Government
 
-| Code | Meaning             | Value           |
-|------|---------------------|-----------------|
-| 200  | Request OK          | {}              |
-| 400  | Request is not JSON | Array of errors |
-| 422  | Input is not valid  | Array of errors |
+| Path           | Verb | Login required | Endpoint                                           |
+|----------------|------|----------------|----------------------------------------------------|
+| broadcast/     | GET  | Yes            | Displays the broadcast message form                |
+| broadcast/     | POST | Yes            | Broadcasts a message to all devices and stores it  |
+| broadcast/ok/  | GET  | Yes            | Shows confirmation of a successful broadcast event |
+| broadcast/log/ | GET  | Yes            | Lists previously broadcast messages                |
 
-### PUT announcements/
-### GET announcements/
 
-## Docker Setup
+### Healtcare
 
-# tl;dr
-```bash
-$ git clone git@github.com:jersobh/docker-covidoff.git
-$ docker-compose up
-```
+| Path           | Verb | Login required | Endpoint                     |
+|----------------|------|----------------|------------------------------|
+| tracker/       | GET  | Yes            | Displays the patient form    |
+| tracker/match/ | POST | No             | Registers a new device match |
 
-Now you can access the application at <https://localhost> and the admin site
-at <https://localhost/admin>.
+The `POST tracker/match/` view accepts the following arguments, as key-value pairs in a JSON object.
 
-A project to get you started with Docker and Django. This is made to
-serve as an example for you to hack on, so I don't claim that this is the
-correct way to setup a system with Django and Docker. Thus, I advice to also
-look at other projects.
+## License
 
-Stack and version numbers used:
+Copyright 2020 tech4COVID19
 
-| Name           | Version  |
-|----------------|----------|
-| Django         | 2.1.4    |
-| Nginx          | 1.15     |
-| Postgresql     | 11.1     |
-| uWSGI          | 2.0.17.1 |
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-## License 
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-Open source
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
