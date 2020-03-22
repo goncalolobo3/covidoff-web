@@ -1,5 +1,18 @@
+{% load static %}
 
-<h1>Broadcast log</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="https://fonts.googleapis.com/css?family=Archivo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/broadcast_log.css' %}">
+    <title>Broadcast Logs</title>
+  </head>
+  <body>
+
+
+<!-- REVIEW THIS SECTION -->
 
 <div>
 	<a href="{% url 'broadcast' %}">New broadcast</a>
@@ -8,15 +21,68 @@
 
 <div>
 
+</div>
+
+<form action="{% url 'logout' %}" method="POST">
+	<button type="submit">Logout</button>
+</form>
+
+
+
+
+
+
+  	
+    <div id="root">
+      <div class='cms-wrapper'>
+        <div class='cms-header'>
+          <div class="cms-nav-left">
+            <div class="cms-nav-item selected">
+              <div class="cms-nav-item-text">New broadcast</div>
+            </div>
+            <div class="cms-nav-item">
+              <div class="cms-nav-item-text">broadcast log</div>
+            </div>
+          </div>
+          <div class="cms-nav-title">CORONA | APP</div>
+          <div class="cms-nav-right">
+            <div class="cms-avatar">
+              <img src='http://placehold.it/100x100'/>
+            </div>
+          </div>
+        </div>
+        <div class='cms-body'>
+          <div class='cms-content'>
+            <div class="panel broadcast-logs-panel">
+              <h1>Broadcast Log</h1>
+              <button class="btn add-new-alert">Add New Alert</button>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Sender profile</th>
+                    <th class="cell-expand">Message content</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+
 {% for message in page %}
-	<div>
-		{{ message.author.email }}
-    	{{ message.text }}
-    	{{ message.creation_date }}
-    </div>
+	<tr>
+		<td class='no-wrap'>{{ message.author.email }}</td>
+		<td>{{ message.text }}</td>
+		<td class='no-wrap'>{{ message.creation_date|date:"G:i" }}</td>
+		<td class='no-wrap'>{{ message.creation_date|date:"d-m-Y" }}</td>
+    </tr>
     
 {% endfor %}
 
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
 {% if page.has_previous %}
 	<a href="?page=1">&laquo; first</a>
@@ -30,10 +96,5 @@ Page {{ page.number }} of {{ page.paginator.num_pages }}.
 	<a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
 {% endif %}
 
-
-</div>
-
-<form action="{% url 'logout' %}" method="POST">
-	<button type="submit">Logout</button>
-</form>
-
+  </body>
+</html>

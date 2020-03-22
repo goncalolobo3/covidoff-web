@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView
+omeomefrom django.views.generic import TemplateView
 from django.views.generic import View
 from django.shortcuts import render
 from django.http import JsonResponse
