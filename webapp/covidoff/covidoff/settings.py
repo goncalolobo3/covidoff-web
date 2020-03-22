@@ -24,13 +24,16 @@ if COVIDOFF_GOVERNMENT_DEPLOY == COVIDOFF_HEALTHCARE_DEPLOY:
 COVIDOFF_MESSAGES_PER_PAGE = 3 # 25
 COVIDOFF_USERS_PER_PAGE = 3 # 25
 
-LOGIN_URL = '/account/login/'
-
 if COVIDOFF_HEALTHCARE_DEPLOY:
     LOGIN_REDIRECT_URL = '/tracker/'
 
 elif COVIDOFF_GOVERNMENT_DEPLOY:
     LOGIN_REDIRECT_URL = '/broadcast/'
+
+COVIDOFF_SIGNING_KEY = b'6dc86c1c43c8fdadca648183af6c6ab872cff7a7fd61e4967f7d177253645768'
+COVIDOFF_VERIFY_KEY = b'a0d096e50dd19dcd98611132b2ab8dce16ab90a8e88804164b657eb02c6b97aa'
+
+LOGIN_URL = '/account/login/'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -57,11 +60,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'qr_code',
-    'broadcast',
     'access',
     'tracker',
 ]
+
+if COVIDOFF_HEALTHCARE_DEPLOY:
+    INSTALLED_APPS += ['qr_code']
+
+if COVIDOFF_GOVERNMENT_DEPLOY:
+    INSTALLED_APPS += ['broadcast']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -148,8 +155,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
 ]
