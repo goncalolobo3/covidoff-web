@@ -30,7 +30,8 @@ else:
         
         path('account/', include('access.urls')),
         path('admin/', admin.site.urls),
-        path('tracker/', include('tracker.urls'))
+        path('tracker/', include('tracker.urls')),
+        path('auth/', include('authnoop.urls')),
     ]
 
     # Pedir chave pública
