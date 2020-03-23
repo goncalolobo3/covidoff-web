@@ -18,27 +18,35 @@ from django.urls import path, include
 from django.conf import settings
 from django.views.generic import RedirectView
 
-urlpatterns = [
+if settings.COVIDOFF_AUTHENTICATION_DEPLOY:
     
-    path('account/', include('access.urls')),
-    path('admin/', admin.site.urls),
-]
-
-# Pedir chave pública
-
-# Healtcare-speciifc URLs
-if settings.COVIDOFF_HEALTHCARE_DEPLOY:
-    
-    urlpatterns += [
-        path('', RedirectView.as_view(url=settings.LOGIN_REDIRECT_URL, permanent=False)),
-        path('tracker/', include('tracker.urls'))
+    urlpatterns = [
+        path('auth/', include('authnoop.urls')),
     ]
 
-# Government-speciifc URLs
-if settings.COVIDOFF_GOVERNMENT_DEPLOY:
-    
-    urlpatterns += [
-        path('', RedirectView.as_view(url=settings.LOGIN_REDIRECT_URL, permanent=False)),
-        path('broadcast/', include('broadcast.urls')),
-        # path('announcement/', include('announcements.urls')),
+else:
+
+    urlpatterns = [
+        
+        path('account/', include('access.urls')),
+        path('admin/', admin.site.urls),
     ]
+
+    # Pedir chave pública
+
+    # Healtcare-speciifc URLs
+    if settings.COVIDOFF_HEALTHCARE_DEPLOY:
+        
+        urlpatterns += [
+            path('', RedirectView.as_view(url=settings.LOGIN_REDIRECT_URL, permanent=False)),
+            path('tracker/', include('tracker.urls'))
+        ]
+
+    # Government-speciifc URLs
+    if settings.COVIDOFF_GOVERNMENT_DEPLOY:
+        
+        urlpatterns += [
+            path('', RedirectView.as_view(url=settings.LOGIN_REDIRECT_URL, permanent=False)),
+            path('broadcast/', include('broadcast.urls')),
+            # path('announcement/', include('announcements.urls')),
+        ]

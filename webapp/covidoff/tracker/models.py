@@ -20,8 +20,8 @@ class Device(models.Model):
 	uid = models.CharField(max_length=255, primary_key=True,
 		help_text=_('Creation date'))
 
-	diagnosis = models.ForeignKey(DiagnosisChoices, on_delete=models.CASCADE,
-		help_text=_('Diagnosis'))
+	# diagnosis = models.ForeignKey(DiagnosisChoices, on_delete=models.CASCADE,
+	# 	help_text=_('Diagnosis'))
 
 class Match(models.Model):
 

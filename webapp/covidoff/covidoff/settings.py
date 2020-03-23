@@ -15,24 +15,28 @@ import os
 
 COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE = os.environ.get('COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE', 32768)
 
-COVIDOFF_DEPLOYMENT_TYPE = os.environ.get('COVIDOFF_DEPLOYMENT_TYPE')
+COVIDOFF_DEPLOYMENT_TYPE = os.environ.get('COVIDOFF_DEPLOYMENT_TYPE', 'htc')
 
 if COVIDOFF_DEPLOYMENT_TYPE == 'htc':
     COVIDOFF_HEALTHCARE_DEPLOY = True
     COVIDOFF_GOVERNMENT_DEPLOY = False
+    COVIDOFF_AUTHENTICATION_DEPLOY = False
 
 elif COVIDOFF_DEPLOYMENT_TYPE == 'gov':
     COVIDOFF_HEALTHCARE_DEPLOY = False
     COVIDOFF_GOVERNMENT_DEPLOY = True
+    COVIDOFF_AUTHENTICATION_DEPLOY = False
+
+elif COVIDOFF_DEPLOYMENT_TYPE == 'auth':
+    COVIDOFF_HEALTHCARE_DEPLOY = False
+    COVIDOFF_GOVERNMENT_DEPLOY = False
+    COVIDOFF_AUTHENTICATION_DEPLOY = True
 
 else:
     raise ImproperlyConfigured("Deployment type environment variable not found or invalid. Set COVIDOFF_DEPLOYMENT_TYPE to either healthcare deployment (htc) or government deployment (gov) in your environment.")
 
-if COVIDOFF_GOVERNMENT_DEPLOY == COVIDOFF_HEALTHCARE_DEPLOY:
-    raise ImproperlyConfigured("Choose either COVIDOFF_HEALTHCARE_DEPLOY or COVIDOFF_GOVERNMENT_DEPLOY in the settings file, both cannot be set")
-
-COVIDOFF_MESSAGES_PER_PAGE = os.environ.get('COVIDOFF_MESSAGES_PER_PAGE')
-COVIDOFF_USERS_PER_PAGE = os.environ.get('COVIDOFF_USERS_PER_PAGE')
+COVIDOFF_MESSAGES_PER_PAGE = os.environ.get('COVIDOFF_MESSAGES_PER_PAGE', 25)
+COVIDOFF_USERS_PER_PAGE = os.environ.get('COVIDOFF_USERS_PER_PAGE', 25)
 
 if COVIDOFF_HEALTHCARE_DEPLOY:
     LOGIN_REDIRECT_URL = '/tracker/'
@@ -52,14 +56,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '1+*q1@5$+r)rffyvefj=wgv@c%1*-!hfb0xz%6&e4v#)_ek@kt')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-AUTH_USER_MODEL = 'access.User'
 
 # Application definition
 
@@ -70,15 +72,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'access',
-    'tracker',
 ]
 
-if COVIDOFF_HEALTHCARE_DEPLOY:
-    INSTALLED_APPS += ['qr_code']
+if COVIDOFF_AUTHENTICATION_DEPLOY:
+    INSTALLED_APPS += ['authnoop']
 
-if COVIDOFF_GOVERNMENT_DEPLOY:
-    INSTALLED_APPS += ['broadcast']
+else:
+
+    AUTH_USER_MODEL = 'access.User'
+
+    INSTALLED_APPS += [
+        'access',
+        'tracker'
+    ]
+
+    if COVIDOFF_HEALTHCARE_DEPLOY:
+        INSTALLED_APPS += ['qr_code']
+
+    if COVIDOFF_GOVERNMENT_DEPLOY:
+        INSTALLED_APPS += ['broadcast']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -151,6 +163,10 @@ LANGUAGES = (
     ('pt', 'Portugês'),
     ('es', 'Español')
 )
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
 
 TIME_ZONE = 'UTC'
 

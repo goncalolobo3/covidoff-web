@@ -15,11 +15,29 @@ class TestCalls(TestCase):
 		data = {
 			'matcher': 'matcher_id',
 			'matchee': 'matchee_id',
-			'timestamp': 13081238,
+			'timestamp': '13081238',
 			'latitude': '30.5951051',	# Wuhan
 			'longitude': '114.2999353',
 			'matcher_meta': 'matcher_meta',
 			'matcher_meta': 'matchee_meta',
 		}
 
-		self.client.post(reverse('match'), json.dumps(data), content_type='application/json')
+		response = self.client.post(reverse('match'), json.dumps(data), content_type='application/json')
+
+	def test_match_view_invalid(self):
+
+		# Government-only view
+		if not settings.COVIDOFF_HEALTHCARE_DEPLOY:
+			return
+
+		data = {
+			'matcher': 'matcher_id',
+			'matchee': 'matchee_id',
+			'timestamp': '<error>',
+			'latitude': '30.5951051',	# Wuhan
+			'longitude': '114.2999353',
+			'matcher_meta': 'matcher_meta',
+			'matcher_meta': 'matchee_meta',
+		}
+
+		response = self.client.post(reverse('match'), json.dumps(data), content_type='application/json')
