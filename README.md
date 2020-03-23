@@ -57,6 +57,29 @@ All views return HTML, except `POST tracker/match/`, which both accepts and retu
 
 The `POST tracker/match/` view accepts the following arguments, as key-value pairs in a JSON object.
 
+### AJAX endpoints
+
+There are two AJAX enpoints, `POST tracker/match/` and `POST tracker/find/`. These are to be called by the app and both accept and return `application/json`. All arguments are key-value pairs in a JSON object. No arrays for batch insertion are accepted yet.
+
+`POST tracker/match`
+
+| Argument     | Type         | Required  | Meaning                                                                 |
+|--------------|--------------|-----------|-------------------------------------------------------------------------|
+| matcher      | String       | Yes       | The device ID for the device that is reporting the match                |
+| matchee      | String       | Yes       | The device ID for the device that was found                             |
+| latitude     | Decimal(9,6) | No        | GPS latitude                                                            |
+| longitude    | Decimal(9,6) | No        | GPS longitude                                                           |
+| matcher_meta | String       | No        | Meta string for any optional relevant information regarding the matcher |
+| matchee_meta | String       | No        | Meta string for any optional relevant information regarding the matchee |
+
+Note: the absence of required arguments is accepted at this point, but it won't be in the future.
+
+| Code | Return Value                                                                                                                                                                                                                                      | Meaning                            |
+|------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
+| 400  | {"error": "<description>"}                                                                                                                                                                                                                        | JSON format is invalid             |
+| 422  | {"longitude": ["Enter a number."]}                                                                                                                                                                                                                | JSON is valid, but the data is not |
+| 200  | {<br>"id": 10,<br>"matcher": "id",<br>"matchee": "id",<br>"latitude": "114.2999353",<br>"longitude": "114.2999353",<br>"timestamp": "2020-03-23T22:33:57.692Z",<br>"matcher_meta": "meta information",<br>"matchee_meta": "meta information"<br>} | OK                                 |
+
 ## License
 
 Copyright 2020 tech4COVID19
