@@ -19,12 +19,44 @@ http {
         server webapp:8000;
     }
 
+    # ---------------------------------------------------------------------------
+    # Production
+    #
+    # Use this configuration for a deployment. You'll have to configure SSL.
+    # ---------------------------------------------------------------------------
+    #server {
+    #    # rewrite all HTTP to HTTPS
+    #    listen 80;
+    #    server_name ${NGINX_SERVER_NAME};
+    #
+    #    return 301 https://${NGINX_SERVER_NAME}${DOLLAR}request_uri;
+    #}
+
+    # ---------------------------------------------------------------------------
+    # Development
+    #
+    # You may use this for development. It doesn't use SSL, making it unsafe.
+    # Remove this setting when moving to production.
+    # ---------------------------------------------------------------------------
     server {
         # rewrite all HTTP to HTTPS
         listen 80;
         server_name ${NGINX_SERVER_NAME};
 
-        return 301 https://${NGINX_SERVER_NAME}${DOLLAR}request_uri;
+        location /static {
+            alias /srv/static-files;
+
+            # http://stackoverflow.com/q/19213510/1346257
+            include /etc/nginx/mime.types;
+        }
+
+        location = /robots.txt { return 200 "User-agent: *\nAllow: /"; }
+        location = /favicon.ico { access_log off; log_not_found off; return 404; }
+        
+        location / {
+            uwsgi_pass      django;
+            include         uwsgi_params;
+        }
     }
 
     server {

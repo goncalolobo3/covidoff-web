@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils import timezone
 from django.core.serializers import serialize
+from django.forms.models import model_to_dict
 from tracker.models import Device
 from tracker.models import Match
 from tracker.forms import DeviceForm
@@ -91,9 +92,6 @@ class MatchView(View):
 			'matchee_meta': form.cleaned_data['matchee_meta'],
 		})
 
-		obj = serialize('json', [match])
-
-		# Return the created object
-		return JsonResponse(obj)	# 200 !
+		return JsonResponse(model_to_dict(match))
 
 # TODO Accept in batches
