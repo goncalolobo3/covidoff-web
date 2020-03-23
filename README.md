@@ -50,16 +50,19 @@ All views return HTML, except `POST tracker/match/`, which both accepts and retu
 
 ### Healtcare
 
-| Path           | Verb | Login required | Endpoint                     |
-|----------------|------|----------------|------------------------------|
-| tracker/       | GET  | Yes            | Displays the patient form    |
-| tracker/match/ | POST | No             | Registers a new device match |
-
-The `POST tracker/match/` view accepts the following arguments, as key-value pairs in a JSON object.
+| Path              | Verb | Login required | Endpoint                     |
+|-------------------|------|----------------|------------------------------|
+| tracker/          | GET  | Yes            | Displays the patient form    |
+| tracker/match/    | POST | No             | Registers a new device match |
+| tracker/find/<id> | POST | No             | Registers a new device match |
 
 ### AJAX endpoints
 
-There are two AJAX enpoints, `POST tracker/match/` and `POST tracker/find/`. These are to be called by the app and both accept and return `application/json`. All arguments are key-value pairs in a JSON object. No arrays for batch insertion are accepted yet.
+There are two AJAX enpoints, `POST tracker/match/` and `POST tracker/find/`. The former both accepts and returns `application/json`, the later takes only one argument in the URL, the user ID that we're looking to find.
+
+Note: in the context of the app, this ID is what is given by the QR code. The return value is not specified yet.
+
+These are to be called by the app and both accept and return `application/json`. All arguments are key-value pairs in a JSON object. No arrays for batch insertion are accepted yet.
 
 `POST tracker/match`
 
@@ -78,7 +81,8 @@ Note: the absence of required arguments is accepted at this point, but it won't 
 |------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
 | 400  | {"error": "<description>"}                                                                                                                                                                                                                        | JSON format is invalid             |
 | 422  | {"longitude": ["Enter a number."]}                                                                                                                                                                                                                | JSON is valid, but the data is not |
-| 200  | {<br>"id": 10,<br>"matcher": "id",<br>"matchee": "id",<br>"latitude": "114.2999353",<br>"longitude": "114.2999353",<br>"timestamp": "2020-03-23T22:33:57.692Z",<br>"matcher_meta": "meta information",<br>"matchee_meta": "meta information"<br>} | OK                                 |
+| 200  | {<br>"id": 10,<br>"matcher": "id",<br>"matchee": "id",<br>"latitude": "114.2999353",<br>"longitude": "114.2999353",<br>"timestamp": "2020-03-23T22:33:57.692Z",<br>"matcher_meta": "meta information",<br>"matchee_meta": "meta information"<br>} | OK                                 |,
+
 
 ## License
 
