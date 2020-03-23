@@ -1,0 +1,3 @@
+#!/bin/sh
+
+curl --header "Content-Type: application/json" --request POST --data '{"matcher":"ID_FOR_THE_MATCHER", "matchee": "ID_FOR_THE_MATCHEE", "longitude": "114.2999353", "matcher_meta": "Whatever you want to send regarding the matcher", "matchee_meta": "Whatever you want to send regarding the matchee"}' http://127.0.0.1:8000/tracker/match/ -L -k

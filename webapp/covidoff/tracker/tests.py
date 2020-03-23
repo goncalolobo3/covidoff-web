@@ -24,6 +24,8 @@ class TestCalls(TestCase):
 
 		response = self.client.post(reverse('match'), json.dumps(data), content_type='application/json')
 
+		self.assertEqual(response.status_code, 200)
+
 	def test_match_view_invalid(self):
 
 		# Government-only view
@@ -33,11 +35,12 @@ class TestCalls(TestCase):
 		data = {
 			'matcher': 'matcher_id',
 			'matchee': 'matchee_id',
-			'timestamp': '<error>',
-			'latitude': '30.5951051',	# Wuhan
+			'latitude': '<error>',	# Wuhan
 			'longitude': '114.2999353',
 			'matcher_meta': 'matcher_meta',
 			'matcher_meta': 'matchee_meta',
 		}
 
 		response = self.client.post(reverse('match'), json.dumps(data), content_type='application/json')
+
+		self.assertEqual(response.status_code, 422)

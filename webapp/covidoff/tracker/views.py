@@ -3,6 +3,7 @@ from django.views.generic import View
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils import timezone
+from django.core.serializers import serialize
 from tracker.models import Device
 from tracker.models import Match
 from tracker.forms import DeviceForm
@@ -64,7 +65,6 @@ class FindView(View):
 
 		return JsonResponse({})
 
-		
 class MatchView(View):
 
 	def post(self, request):
@@ -91,6 +91,9 @@ class MatchView(View):
 			'matchee_meta': form.cleaned_data['matchee_meta'],
 		})
 
-		return JsonResponse({})
+		obj = serialize('json', [match])
+
+		# Return the created object
+		return JsonResponse(obj)	# 200 !
 
 # TODO Accept in batches

@@ -30,6 +30,7 @@ else:
         
         path('account/', include('access.urls')),
         path('admin/', admin.site.urls),
+        path('tracker/', include('tracker.urls'))
     ]
 
     # Pedir chave pública
@@ -39,7 +40,6 @@ else:
         
         urlpatterns += [
             path('', RedirectView.as_view(url=settings.LOGIN_REDIRECT_URL, permanent=False)),
-            path('tracker/', include('tracker.urls'))
         ]
 
     # Government-speciifc URLs
