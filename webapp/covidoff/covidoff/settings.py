@@ -13,10 +13,20 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 from django.core.exceptions import ImproperlyConfigured
 import os
 
-COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE = 32768
+COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE = os.environ.get('COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE', 32768)
 
-COVIDOFF_HEALTHCARE_DEPLOY = False
-COVIDOFF_GOVERNMENT_DEPLOY = not COVIDOFF_HEALTHCARE_DEPLOY
+COVIDOFF_DEPLOYMENT_TYPE = os.environ.get('COVIDOFF_DEPLOYMENT_TYPE')
+
+if COVIDOFF_DEPLOYMENT_TYPE == 'htc':
+    COVIDOFF_HEALTHCARE_DEPLOY = True
+    COVIDOFF_GOVERNMENT_DEPLOY = False
+
+elif COVIDOFF_DEPLOYMENT_TYPE == 'gov':
+    COVIDOFF_HEALTHCARE_DEPLOY = False
+    COVIDOFF_GOVERNMENT_DEPLOY = True
+
+else:
+    raise ImproperlyConfigured("Deployment type environment variable not found or invalid. Set COVIDOFF_DEPLOYMENT_TYPE to either healthcare deployment (htc) or government deployment (gov) in your environment.")
 
 if COVIDOFF_GOVERNMENT_DEPLOY == COVIDOFF_HEALTHCARE_DEPLOY:
     raise ImproperlyConfigured("Choose either COVIDOFF_HEALTHCARE_DEPLOY or COVIDOFF_GOVERNMENT_DEPLOY in the settings file, both cannot be set")
@@ -43,13 +53,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-
-print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-print(os.environ.get('DJANGO_DEBUG'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
