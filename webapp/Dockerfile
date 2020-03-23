@@ -7,8 +7,6 @@ ADD ./covidoff /srv/covidoff
 ADD ./config/requirements.txt /srv/covidoff/
 RUN pip3 install -r /srv/covidoff/requirements.txt
 
-RUN /srv/covidoff/manage.py migrate
-
 # Add start script
 ADD ./config/start.sh /
 
