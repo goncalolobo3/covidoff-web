@@ -21,8 +21,8 @@ COVIDOFF_GOVERNMENT_DEPLOY = not COVIDOFF_HEALTHCARE_DEPLOY
 if COVIDOFF_GOVERNMENT_DEPLOY == COVIDOFF_HEALTHCARE_DEPLOY:
     raise ImproperlyConfigured("Choose either COVIDOFF_HEALTHCARE_DEPLOY or COVIDOFF_GOVERNMENT_DEPLOY in the settings file, both cannot be set")
 
-COVIDOFF_MESSAGES_PER_PAGE = 3 # 25
-COVIDOFF_USERS_PER_PAGE = 3 # 25
+COVIDOFF_MESSAGES_PER_PAGE = os.environ.get('COVIDOFF_MESSAGES_PER_PAGE')
+COVIDOFF_USERS_PER_PAGE = os.environ.get('COVIDOFF_USERS_PER_PAGE')
 
 if COVIDOFF_HEALTHCARE_DEPLOY:
     LOGIN_REDIRECT_URL = '/tracker/'
@@ -30,8 +30,8 @@ if COVIDOFF_HEALTHCARE_DEPLOY:
 elif COVIDOFF_GOVERNMENT_DEPLOY:
     LOGIN_REDIRECT_URL = '/broadcast/'
 
-COVIDOFF_SIGNING_KEY = b'6dc86c1c43c8fdadca648183af6c6ab872cff7a7fd61e4967f7d177253645768'
-COVIDOFF_VERIFY_KEY = b'a0d096e50dd19dcd98611132b2ab8dce16ab90a8e88804164b657eb02c6b97aa'
+COVIDOFF_SIGNING_KEY = os.environ.get('COVIDOFF_SIGNING_KEY')
+COVIDOFF_VERIFY_KEY = os.environ.get('COVIDOFF_VERIFY_KEY')
 
 LOGIN_URL = '/account/login/'
 
@@ -42,7 +42,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v9b2hl1&yn7n(e#5*mrqf#(n6=bly3q&ee3mnr8-m^3s46ye12'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print(os.environ.get('DJANGO_DEBUG'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
