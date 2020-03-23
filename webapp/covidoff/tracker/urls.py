@@ -7,6 +7,6 @@ from tracker.views import MatchView
 
 urlpatterns = [
 	path('', login_required(PatientView.as_view()), name='patient'),
-	path('find/', csrf_exempt(FindView.as_view()), name='find'),
+	path('find/<int:user>', csrf_exempt(FindView.as_view()), name='find'),
 	path('match/', csrf_exempt(MatchView.as_view()), name='match'),
 ]

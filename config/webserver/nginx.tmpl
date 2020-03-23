@@ -20,6 +20,8 @@ http {
     }
 
     # ---------------------------------------------------------------------------
+    # CONFIGURE TLS/SSL !! For production.
+    # ---------------------------------------------------------------------------
     # Production
     #
     # Use this configuration for a deployment. You'll have to configure SSL.
@@ -39,7 +41,7 @@ http {
     # Remove this setting when moving to production.
     # ---------------------------------------------------------------------------
     server {
-        # rewrite all HTTP to HTTPS
+
         listen 80;
         server_name ${NGINX_SERVER_NAME};
 

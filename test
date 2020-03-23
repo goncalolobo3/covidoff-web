@@ -1,6 +1,6 @@
 #!/bin/sh
 
-curl --header "Content-Type: application/json" --request POST --data '{"matcher":"ID_FOR_THE_MATCHER", "matchee": "ID_FOR_THE_MATCHEE", "longitude": "114.2999353", "latitude": "114.2999353", "matcher_meta": "meta information", "matchee_meta": "meta information"}' http://localhost/tracker/match/ -L -k
+#curl --header "Content-Type: application/json" --request POST --data '{"matcher":"ID_FOR_THE_MATCHER", "matchee": "ID_FOR_THE_MATCHEE", "longitude": "114.2999353", "latitude": "114.2999353", "matcher_meta": "meta information", "matchee_meta": "meta information"}' http://localhost/tracker/match/ -L -k
 
-#curl --header "Content-Type: application/json" --request POST --data '{}' http://localhost/tracker/match/ -L -k
+curl http://localhost/tracker/find/1 --request POST
 echo

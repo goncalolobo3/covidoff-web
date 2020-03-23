@@ -47,22 +47,7 @@ class PatientView(TemplateView):
 
 class FindView(View):
 	
-	def post(self, request):
-
-		try:
-			body = request.body.decode('utf-8')
-			body = json.loads(body)
-
-		except json.decoder.JSONDecodeError as ex:
-			return JsonResponse({ 'error': str(ex) }, status=400)
-
-		form = FindForm(body)
-
-		if not form.is_valid():
-			return JsonResponse(dict(form.errors.items()), status=422)
-
-		# 
-		find = forms.cleaned_data['find']
+	def post(self, request, user):
 
 		return JsonResponse({})
 
