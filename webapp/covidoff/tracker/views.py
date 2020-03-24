@@ -47,24 +47,16 @@ class PatientView(TemplateView):
 
 class FindView(View):
 	
-	def post(self, request):
+	def post(self, request, uid, did):
 
-		try:
-			body = request.body.decode('utf-8')
-			body = json.loads(body)
+		# uid not found = 404
+		# uid, did invalid = 422
 
-		except json.decoder.JSONDecodeError as ex:
-			return JsonResponse({ 'error': str(ex) }, status=400)
-
-		form = FindForm(body)
-
-		if not form.is_valid():
-			return JsonResponse(dict(form.errors.items()), status=422)
-
-		# 
-		find = forms.cleaned_data['find']
 
 		return JsonResponse({})
+
+
+#path('find/<uid:slug>/device<did:slug>/', csrf_exempt(FindView.as_view()), name='find'),
 
 class MatchView(View):
 

@@ -31,6 +31,10 @@ else:
         path('account/', include('access.urls')),
         path('admin/', admin.site.urls),
         path('tracker/', include('tracker.urls')),
+    ]
+
+    # SDK authentication noop point
+    urlpatterns += [
         path('auth/', include('authnoop.urls')),
     ]
 

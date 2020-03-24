@@ -44,3 +44,10 @@ class TestCalls(TestCase):
 		response = self.client.post(reverse('match'), json.dumps(data), content_type='application/json')
 
 		self.assertEqual(response.status_code, 422)
+
+	def test_find_view(self):
+
+
+		from django.urls import reverse
+
+		print(reverse('find', args=['42', 'b821c665643ad219f538dc2db9035268']))
