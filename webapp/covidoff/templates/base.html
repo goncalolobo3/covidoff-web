@@ -17,9 +17,16 @@
         <div class='cms-wrapper'>
             <div class='cms-header'>
                 <div class="cms-nav-left">
+                    <a href="{% url 'broadcast_log' %}">Broadcast log</a>
+                    <a href="{% url 'users' %}">User list</a>
                 </div>
                 <div class="cms-nav-title">CORONA | APP</div>
                 <div class="cms-nav-right">
+                    <!-- define url admin panel -->
+                    <a href="{% url 'logout' %}">ADMIN</a>
+                    <form action="{% url 'logout' %}" method="POST">
+                        <button type="submit">Logout</button>
+                    </form>
                 </div>
             </div>
             <div class='cms-body'>

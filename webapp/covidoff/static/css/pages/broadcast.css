@@ -1,0 +1,32 @@
+.new-broadcast-panel h1 {
+  margin-bottom: 60px;
+}
+
+.broadcast-actions {
+  margin-top: 30px;
+  text-align: right;
+}
+
+.new-broadcast-panel .broadcast-actions .btn{
+  margin-left: 20px;
+}
+
+.new-broadcast-panel textarea {
+  min-height: 400px;
+}
+
+input {
+  width: 100%;
+  font-family: Archivo;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 270%;
+  display: flex;
+  align-items: center;
+  color: #A0A0A0;
+  border-radius: 16px;
+  margin-bottom: 25px;
+  padding-left: 50px;
+  text-transform: uppercase;
+}

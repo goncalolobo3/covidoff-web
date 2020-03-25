@@ -1,25 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
 
-<h1>Broadcast messages</h1>
+{% block pagecontent %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/pages/broadcast.css' %}">
 
-<a href="{% url 'broadcast_log' %}">Broadcast log</a>
-<a href="{% url 'users' %}">User list</a>
+<div class="panel new-broadcast-panel">
+	<h1>New Alert Broadcast</h1>
+	<form action="{% url 'broadcast' %}" method="POST">
 
-<form action="{% url 'broadcast' %}" method="POST">
+		<!-- ------------------------------------------------------------------- -->
+		<!-- Note: this area is sensitive, since it sends messages to all users. -->
+		<!-- We should add some syntatic salt; e.g., a confirmation box asking   -->
+		<!-- wether the user is sure to send, otherwise they could easily send   -->
+		<!-- trash messages.                                                     -->
+		<!-- ------------------------------------------------------------------- -->
+		<input name="title" type="text" placeholder="Title" class="full-width" />
+		<textarea name="text">Lorem Ipsum...</textarea>
+	
+		<div class="broadcast-actions">
+		  <button class="btn cancel transparent">Cancel</button>
+		  <button class="btn send-new-alert" type="submit">Send Alert</button>
+		</div>
 
-	<!-- ------------------------------------------------------------------- -->
-	<!-- Note: this area is sensitive, since it sends messages to all users. -->
-	<!-- We should add some syntatic salt; e.g., a confirmation box asking   -->
-	<!-- wether the user is sure to send, otherwise they could easily send   -->
-	<!-- trash messages.                                                     -->
-	<!-- ------------------------------------------------------------------- -->
-	<textarea name="text"></textarea>
-	<button type="submit">Send</button>
-
-</form>
-
-
-
-
+	</form>
+</div>
 
 {% for field, field_errors in errors %}
 
@@ -33,10 +37,4 @@
 
 {% endfor %}
 
-
-
-
-
-<form action="{% url 'logout' %}" method="POST">
-	<button type="submit">Logout</button>
-</form>
+{% endblock %}
