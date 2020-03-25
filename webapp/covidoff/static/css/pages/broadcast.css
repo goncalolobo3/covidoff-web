@@ -7,6 +7,12 @@
   text-align: right;
 }
 
+.broadcast-actions-confirm{
+  margin-top: 30px;
+  text-align: center;
+  display: none;
+}
+
 .new-broadcast-panel .broadcast-actions .btn{
   margin-left: 20px;
 }
@@ -29,4 +35,10 @@ input {
   margin-bottom: 25px;
   padding-left: 50px;
   text-transform: uppercase;
+}
+
+#confirm-new-alert-header{
+  color: red;
+  display: none;
+  text-align: center;
 }

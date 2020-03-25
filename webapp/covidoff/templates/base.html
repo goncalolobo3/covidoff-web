@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Archivo&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/core.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}"> -->
     <title>COVID OFF</title>
 </head>
 
@@ -17,16 +18,19 @@
         <div class='cms-wrapper'>
             <div class='cms-header'>
                 <div class="cms-nav-left">
-                    <a href="{% url 'broadcast_log' %}">Broadcast log</a>
-                    <a href="{% url 'users' %}">User list</a>
+                    <a class="cms-nav-item-text" href="{% url 'broadcast_log' %}">Broadcast log</a>
+                    <a class="cms-nav-item-text" href="{% url 'users' %}">User list</a>
                 </div>
-                <div class="cms-nav-title">CORONA | APP</div>
+                <div class="cms-nav-title">COVID | APP</div>
                 <div class="cms-nav-right">
-                    <!-- define url admin panel -->
-                    <a href="{% url 'logout' %}">ADMIN</a>
-                    <form action="{% url 'logout' %}" method="POST">
+                    <!-- TODO set url admin panel -->
+                    <a class="cms-nav-item-text" href="{% url 'logout' %}">ADMIN</a>
+                    <form class="cms-nav-item-text" action="{% url 'logout' %}" method="POST">
                         <button type="submit">Logout</button>
                     </form>
+                    <div class="cms-avatar">
+                        <img src='http://placehold.it/100x100' />
+                    </div>
                 </div>
             </div>
             <div class='cms-body'>
