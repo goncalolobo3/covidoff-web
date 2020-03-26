@@ -6,3 +6,8 @@
 .broadcast-logs-panel .add-new-alert {
   float: right;
 }
+
+.pagination-bar{
+  margin: auto 0;
+  text-align: center;
+}

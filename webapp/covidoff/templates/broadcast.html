@@ -1,42 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
 
-<h1>Broadcast messages</h1>
+{% block pagecontent %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/pages/broadcast.css' %}">
 
-<a href="{% url 'broadcast_log' %}">Broadcast log</a>
-<a href="{% url 'users' %}">User list</a>
+<div class="panel new-broadcast-panel">
+	<h1 id="new-alert-header">New Alert Broadcast</h1>
+	<h1 id="confirm-new-alert-header">Confirm New Alert Broadcast</h1>
+	<form action="{% url 'broadcast' %}" method="POST">
 
-<form action="{% url 'broadcast' %}" method="POST">
+		<!-- ------------------------------------------------------------------- -->
+		<!-- Note: this area is sensitive, since it sends messages to all users. -->
+		<!-- We should add some syntatic salt; e.g., a confirmation box asking   -->
+		<!-- wether the user is sure to send, otherwise they could easily send   -->
+		<!-- trash messages.                                                     -->
+		<!-- ------------------------------------------------------------------- -->
+		<input name="title" type="text" placeholder="Title" class="full-width" />
+		<textarea name="text">Lorem Ipsum...</textarea>
+		<textarea readonly id="text-preview" style="display: none;"></textarea>
 
-	<!-- ------------------------------------------------------------------- -->
-	<!-- Note: this area is sensitive, since it sends messages to all users. -->
-	<!-- We should add some syntatic salt; e.g., a confirmation box asking   -->
-	<!-- wether the user is sure to send, otherwise they could easily send   -->
-	<!-- trash messages.                                                     -->
-	<!-- ------------------------------------------------------------------- -->
-	<textarea name="text"></textarea>
-	<button type="submit">Send</button>
+		<div id="confirm-buttons" class="broadcast-actions broadcast-actions-confirm">
+			<button class="btn cancel transparent" type="button" onclick="editClickHandler()">Edit</button>
+			<button class="btn send-new-alert" type="submit">Send Alert</button>
+		</div>
 
-</form>
+		<div id="pre-send-buttons" class="broadcast-actions">
+			<button class="btn cancel transparent" type="button">Cancel</button>
+			<button id="btn-pre-send-alert" type="button" class="btn send-new-alert"
+				onclick="preSendClickHandler()">Send Alert</button>
+		</div>
 
+	</form>
+</div>
 
+<script>
+	// TODO
+	// Another page (confirm page) or all here?
+	// Currently raw JS (quite simple functionality for current needs). Prefer JQuery, modal, or similar?
+	let elTitle = document.getElementsByName('title')[0];
+	let elText = document.getElementsByName('text')[0];
+	let elPreview = document.getElementById('text-preview');
 
+	function preSendClickHandler() {
+		document.getElementById('new-alert-header').style.display = 'none';
+		document.getElementById('pre-send-buttons').style.display = 'none';
+		document.getElementById('confirm-new-alert-header').style.display = 'block';
+		document.getElementById('confirm-buttons').style.display = 'block';
+
+		elPreview.style.display = 'block';
+		elPreview.innerHTML = elTitle.value.toString().toUpperCase() + '\n\n' + elText.value.toString();
+		elTitle.style.display = 'none';
+		elText.style.display = 'none';
+	}
+
+	function editClickHandler() {
+		document.getElementById('confirm-new-alert-header').style.display = 'none';
+		document.getElementById('confirm-buttons').style.display = 'none';
+		document.getElementById('new-alert-header').style.display = 'block';
+		document.getElementById('pre-send-buttons').style.display = 'block';
+
+		elPreview.innerHTML = '';
+		elPreview.style.display = 'none';
+		elTitle.style.display = 'block';
+		elText.style.display = 'block';
+	}
+</script>
 
 
 {% for field, field_errors in errors %}
 
-	<div>
-		{{field}}:
+<div>
+	{{field}}:
 
-		{% for err in field_errors %}
-			{{err}}
-		{% endfor %}
-	</div>
+	{% for err in field_errors %}
+	{{err}}
+	{% endfor %}
+</div>
 
 {% endfor %}
 
-
-
-
-
-<form action="{% url 'logout' %}" method="POST">
-	<button type="submit">Logout</button>
-</form>
+{% endblock %}
