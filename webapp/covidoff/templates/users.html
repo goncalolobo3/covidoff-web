@@ -1,67 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
 
-<h1>Users</h1>
+{% block pagecontent %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/pages/users.css' %}">
 
-<div>
-	<a href="{% url 'broadcast' %}">New broadcast</a>
-	<a href="{% url 'broadcast_log' %}">Broadcast log</a>
-</div>
+<div class="panel users-panel">
+	<h1>Users</h1>
 
-<form action="{% url 'users' %}" method="POST">
-	<input name="email" type="email">
-	<button type="submit">Invite</button>
-</form>
+	<div class="user-invite-block">
+		<form action="{% url 'users' %}" method="POST">
+			<h3 class="user-invite-title">Create New User&#160;&#160;</h3>
+			<div class="create-user-input input-field">
+				<input type="text" placeholder="email@gov.co" />
+			</div>
+			<button class="btn add-new-user">Send Invitation</button>
+		</form>
 
-{% if user.is_superuser %}
-	{% if invitation %}
-		Invitation sent
-	{% endif %}
+		{% if user.is_superuser %}
+			{% if invitation %}
+			Invitation sent
+			{% endif %}
 
+			{% for field, field_errors in errors %}
+			<div>
+				{{field}}:
 
-	{% for field, field_errors in errors %}
-
-		<div>
-			{{field}}:
-
-			{% for err in field_errors %}
-				{{err}}
+				{% for err in field_errors %}
+					{{err}}
+				{% endfor %}
+			</div>
 			{% endfor %}
-		</div>
+		{% endif %}
+	</div>
 
-	{% endfor %}
+	<table>
+		<thead>
+			<tr>
+				<th class="cell-expand-quarter">User name</th>
+				<th class="cell-expand">Role</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in page %}
+			<tr>
+				<td class='no-wrap'>{{ user.email }}</td>
+				<td>{{ user.is_superuser }}</td>
+				<td class='no-wrap'>
+					<button class="btn remove">Remove<i class="fa fa-trash"></i></button>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-{% endif %}
+	<div class="pagination-bar">
+		{% if page.has_previous %}
+		<a href="?page=1">&laquo; &#60;&#60;</a>
+		<a href="?page={{ page.previous_page_number }}">&#60;</a>
+		{% endif %}
 
+		Page {{ page.number }} of {{ page.paginator.num_pages }}.
 
-<div>
-
-{% for user in page %}
-	<div>
-		{{ user.email }}
-		{{ user.is_superuser }}
-		{{ user.is_staff }}
-		{{ user.last_login }}
-		{{ user.is_active }}
-    </div>
-    
-{% endfor %}
-
-
-{% if page.has_previous %}
-	<a href="?page=1">&laquo; first</a>
-	<a href="?page={{ page.previous_page_number }}">previous</a>
-{% endif %}
-
-Page {{ page.number }} of {{ page.paginator.num_pages }}.
-
-{% if page.has_next %}
-	<a href="?page={{ page.next_page_number }}">next</a>
-	<a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
-{% endif %}
-
-
+		{% if page.has_next %}
+		<a href="?page={{ page.next_page_number }}">&#62;</a>
+		<a href="?page={{ page.paginator.num_pages }}">&#62;&#62; &raquo;</a>
+		{% endif %}
+	</div>
 </div>
 
-<form action="{% url 'logout' %}" method="POST">
-	<button type="submit">Logout</button>
-</form>
-
+{% endblock %}
