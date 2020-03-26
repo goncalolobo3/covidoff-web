@@ -1,67 +1,106 @@
 
-<h1>Users</h1>
 
-<div>
-	<a href="{% url 'broadcast' %}">New broadcast</a>
-	<a href="{% url 'broadcast_log' %}">Broadcast log</a>
-</div>
+{% load static %}
+{% static 'css/general.css' %}
 
-<form action="{% url 'users' %}" method="POST">
-	<input name="email" type="email">
-	<button type="submit">Invite</button>
-</form>
-
-{% if user.is_superuser %}
-	{% if invitation %}
-		Invitation sent
-	{% endif %}
-
-
-	{% for field, field_errors in errors %}
-
-		<div>
-			{{field}}:
-
-			{% for err in field_errors %}
-				{{err}}
-			{% endfor %}
-		</div>
-
-	{% endfor %}
-
-{% endif %}
-
-
-<div>
-
-{% for user in page %}
-	<div>
-		{{ user.email }}
-		{{ user.is_superuser }}
-		{{ user.is_staff }}
-		{{ user.last_login }}
-		{{ user.is_active }}
+<div class='cms-wrapper'>
+  <div class='cms-header'>
+    <div class="cms-nav-left">
+      <div class="cms-nav-item selected">
+        <div class="cms-nav-item-text">
+          <a href="{% url 'broadcast' %}">New broadcast</a>
+        </div>
+      </div>
+      <div class="cms-nav-item">
+        <div class="cms-nav-item-text">
+          <a href="{% url 'users' %}">User list</a>
+        </div>
+      </div>
     </div>
-    
-{% endfor %}
+    <div class="cms-nav-title">CORONA | APP</div>
+    <div class="cms-nav-right">
+      <div class="cms-avatar">
+        <img src='http://placehold.it/100x100'/>
+      </div>
+    </div>
+  </div>
+  <div class='cms-body'>
+    <div class='cms-content'>
+      <div class="panel users-panel">
+        <h1>Users</h1>
+        <div class="user-invite-block">
+          <form action="{% url 'users' %}" method="POST"></form>
+            <h3 class="user-invite-title">Create New User</h3>
+            <div class="create-user-input input-field">
+              <input name="email" type="email" placeholder="email@gov.co" />
+            </div>
+            <button type="submit" class="btn add-new-user">Send Invitation</button>
+          </form>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th class="cell-expand">Role</th>
+              <th>Last Activity</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in page %}
+              <div>
+                {{ user.email }}
+                {{ user.is_superuser }}
+                {{ user.is_staff }}
+                {{ user.last_login }}
+                {{ user.is_active }}
+              </div>
+              <tr>
+                <td class='no-wrap'>{{ user.email }}</td>
+                <td class='no-wrap'>{{ user.is_superuser }}</td>
+                <td class='no-wrap'>{{ user.is_staff }}</td>
+                <td class='no-wrap'>{{ user.last_login }}</td>
+                <td class='no-wrap'>{{ user.is_active }}</td>
+              </tr>
+                
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="table-pagination">
+          {% if page.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page.previous_page_number }}">previous</a>
+          {% endif %}
+          
+          Page {{ page.number }} of {{ page.paginator.num_pages }}.
+          
+          {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}">next</a>
+            <a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </div>
+        
+        {% if user.is_superuser %}
+          {% if invitation %}
+            Invitation sent
+          {% endif %}
 
 
-{% if page.has_previous %}
-	<a href="?page=1">&laquo; first</a>
-	<a href="?page={{ page.previous_page_number }}">previous</a>
-{% endif %}
+          {% for field, field_errors in errors %}
 
-Page {{ page.number }} of {{ page.paginator.num_pages }}.
+            <div>
+              {{field}}:
 
-{% if page.has_next %}
-	<a href="?page={{ page.next_page_number }}">next</a>
-	<a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
-{% endif %}
+              {% for err in field_errors %}
+                {{err}}
+              {% endfor %}
+            </div>
 
+          {% endfor %}
 
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
-
-<form action="{% url 'logout' %}" method="POST">
-	<button type="submit">Logout</button>
-</form>
 
