@@ -65,6 +65,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+AUTH_USER_MODEL = 'access.User'
+
 # Application definition
 
 INSTALLED_APPS = [
