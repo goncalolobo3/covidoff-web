@@ -1,7 +1,12 @@
 #!/bin/sh
 
 
-curl --header "Content-Type: application/json" --request POST --data '{"matcher":"id", "matchee": "id", "longitude": "114.2999353", "latitude": "114.2999353", "matcher_meta": "meta information", "matchee_meta": "meta information"}' http://54.94.178.165/tracker/match/ -L -k
-
+#curl --header "Content-Type: application/json" --request POST --data '{"matcher":"id", "matchee": "id", "longitude": "114.2999353", "latitude": "114.2999353", "matcher_meta": "meta information", "matchee_meta": "meta information"}' http://54.94.178.165/tracker/match/ -L -k
+#curl --request POST http://54.94.178.165/auth/callback/
+#curl --request POST http://54.94.178.165/auth/callback/
 #curl --header "Content-Type: application/json" --request POST --data '{}' http://localhost/tracker/match/ -L -k
+
+curl --request POST http://54.94.178.165/tracker/find/42/device/b821c665643ad219f538dc2db9035268/
+
+
 echo
