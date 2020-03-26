@@ -45,12 +45,29 @@ class BroadcastView(TemplateView):
 		return self._signing_key().sign(message.encode('utf-8'))
 
 	def _signing_key(self):
+
+		if settings.COVIDOFF_SIGNING_KEY is None:
+			raise Exception("COVIDOFF_SIGNING_KEY is not configured as an env variable. Configure it in order to broadcast messages.")
+
 		return nacl.signing.SigningKey(settings.COVIDOFF_SIGNING_KEY, nacl.encoding.HexEncoder)
 
 	def _broadcast(self, message):
 
-		# TODO broadcast logic
-		logger.warning('Received a broadcast request, but broadcasting is not implemented yet')
+		import boto3
+
+		# Sao Paulo
+		client = boto3.client('sns', region_name='sa-east-1')	
+
+		# See: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sns.html#SNS.Client.create_topic
+		topic = client.create_topic(
+			Name=settings.COVIDOFF_TOPIC_NAME
+		)
+
+		# See: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sns.html#SNS.PlatformEndpoint.publish
+		client.publish(
+			TopicArn=topic['TopicArn'],
+			Message=message.hex()
+		)
 
 class KeyView(View):
 

@@ -38,14 +38,16 @@ else:
 COVIDOFF_MESSAGES_PER_PAGE = os.environ.get('COVIDOFF_MESSAGES_PER_PAGE', 25)
 COVIDOFF_USERS_PER_PAGE = os.environ.get('COVIDOFF_USERS_PER_PAGE', 25)
 
+COVIDOFF_TOPIC_NAME = os.environ.get('COVIDOFF_TOPIC_NAME', 'covidoff')
+
 if COVIDOFF_HEALTHCARE_DEPLOY:
     LOGIN_REDIRECT_URL = '/tracker/'
 
 elif COVIDOFF_GOVERNMENT_DEPLOY:
     LOGIN_REDIRECT_URL = '/broadcast/'
 
-COVIDOFF_SIGNING_KEY = os.environ.get('COVIDOFF_SIGNING_KEY')
-COVIDOFF_VERIFY_KEY = os.environ.get('COVIDOFF_VERIFY_KEY')
+COVIDOFF_SIGNING_KEY = os.environ.get('COVIDOFF_SIGNING_KEY', b'be5e8d34555c7d686c0c7bfe393becc83bbec8df2ab4aeae89d7af4046b1335d')
+COVIDOFF_VERIFY_KEY = os.environ.get('COVIDOFF_VERIFY_KEY', b'514e9c0b9beb7cf38f3c26f9d533f35e7ac80de8b757c84285933c8b1260e4b3')
 
 LOGIN_URL = '/account/login/'
 
@@ -90,7 +92,9 @@ else:
         INSTALLED_APPS += ['qr_code']
 
     if COVIDOFF_GOVERNMENT_DEPLOY:
-        INSTALLED_APPS += ['broadcast']
+        INSTALLED_APPS += [
+            'broadcast'
+        ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,15 +132,15 @@ WSGI_APPLICATION = 'covidoff.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'mysecretpassword',
-        'HOST': 'db',
-        'PORT': '5432',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'postgres',
+        # 'USER': 'postgres',
+        # 'PASSWORD': 'mysecretpassword',
+        # 'HOST': 'db',
+        # 'PORT': '5432',
     }
 }
 

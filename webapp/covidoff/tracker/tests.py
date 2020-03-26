@@ -47,7 +47,9 @@ class TestCalls(TestCase):
 
 	def test_find_view(self):
 
-
 		from django.urls import reverse
 
-		print(reverse('find', args=['42', 'b821c665643ad219f538dc2db9035268']))
+		reverse('find', args=['42', 'b821c665643ad219f538dc2db9035268'])
+
+		# TODO
+		

@@ -35,7 +35,7 @@ class LoginView(TemplateView):
 
 			return render(request, self.template_name, {
 				'errors': form.errors.items()
-			})
+			}, status=422)
 
 		user = authenticate(request, email=form.cleaned_data['email'], password=form.cleaned_data['password'])
 
