@@ -24,7 +24,7 @@ class BroadcastView(TemplateView):
 		form = MessageForm(request.POST)
 
 		if not form.is_valid():
-
+			
 			return render(request, self.template_name, {
 				'errors': form.errors.items()
 			}, status=422)
@@ -35,8 +35,8 @@ class BroadcastView(TemplateView):
 		})
 
 		message = form.cleaned_data['text']
-		message = self._encode_and_sign(message)
 
+		self._encode_and_sign(message)
 		self._broadcast(message)
 
 		return redirect('broadcast_ok')

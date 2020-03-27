@@ -6,8 +6,10 @@
 
 <div class="panel broadcast-logs-panel">
   <h1>Broadcast Log</h1>
-  <button class="btn add-new-alert"><a href="/broadcast" style="text-decoration: none;">Add New Alert</a></button>
-  <!-- <a class="btn add-new-alert" href="/broadcast">Add New Alert</a> -->
+
+  <button class="btn add-new-alert">
+    <a href="/broadcast" style="text-decoration: none;">Add New Alert</a>
+  </button>
   <table>
     <thead>
       <tr>
@@ -26,7 +28,6 @@
         <td class='no-wrap'>{{ message.creation_date|date:"G:i" }}</td>
         <td class='no-wrap'>{{ message.creation_date|date:"d-m-Y" }}</td>
       </tr>
-
       {% endfor %}
 
     </tbody>
@@ -34,19 +35,41 @@
 
   <div class="pagination-bar">
     {% if page.has_previous %}
-    <a href="?page=1">&laquo; &#60;&#60;</a>
-    <a href="?page={{ page.previous_page_number }}">&#60;</a>
+    <button type="button" role='button' class="btn-default btn-circle btn-pagination-arrow"
+      onClick="cascadeClickToChild(this.children[0])">
+      <a class="link-no-underline" href="?page={{ page.previous_page_number }}"><i
+          class="fa fa-angle-left pagination-arrow"></i></a>
+    </button>
     {% endif %}
 
-    Page {{ page.number }} of {{ page.paginator.num_pages }}.
+    {% for page_number in  page.paginator.page_range %}
+      {% ifequal page_number page.number %}
+      <button type="button" role='button' class="btn-default btn-circle btn-current-page"
+        onClick="cascadeClickToChild(this.children[0])">
+        <a class="link-no-underline" href="?page={{forloop.counter}}">{{forloop.counter}}</a>
+      </button>
+      {% else %}
+      <button type="button" role='button' class="btn-default btn-circle btn-pagination-page"
+        onClick="cascadeClickToChild(this.children[0])">
+        <a class="link-no-underline" href="?page={{forloop.counter}}">{{forloop.counter}}</a>
+      </button>
+      {% endifequal %}
+    {% endfor %}
 
     {% if page.has_next %}
-    <a href="?page={{ page.next_page_number }}">&#62;</a>
-    <a href="?page={{ page.paginator.num_pages }}">&#62;&#62; &raquo;</a>
+    <button type="button" role='button' class="btn-default btn-circle btn-pagination-arrow"
+      onClick="cascadeClickToChild(this.children[0])">
+      <a id="link-next-page" class="link-no-underline" href="?page={{ page.next_page_number }}"><i
+          class="fa fa-angle-right pagination-arrow"></i></a>
+    </button>
     {% endif %}
   </div>
 </div>
 
-
+<script>
+  function cascadeClickToChild(firstChild) {
+    firstChild.click();
+  }
+</script>
 
 {% endblock %}

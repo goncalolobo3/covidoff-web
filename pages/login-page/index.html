@@ -1,3 +1,6 @@
+
+{% load static %}
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -11,36 +14,12 @@
   </head>
   <body>
     <div id="root">
-      <div class='cms-wrapper'>
-        <div class='cms-header'>
-          <div class="cms-nav-left">
-          </div>
-          <div class="cms-nav-title">CORONA | APP</div>
-          <div class="cms-nav-right">
-          </div>
-        </div>
-        <div class='cms-body'>
-          <div class='cms-content'>
-            <div class="panel login-panel">
-              <h2>Login</h2>
-              <div class='login-fields'>
-                <div class='login-username input-field iconed'>
-                  <label>Username</label>
-                  <i class="fa fa-user"></i>
-                  <input type="text" placeholder="email@gov.co" class="full-width" />
-                </div>
-                <div class='login-password input-field iconed'>
-                  <label>Password</label>
-                  <i class="fa fa-lock"></i>
-                  <input type="password" placeholder="email@gov.co" class="full-width" />
-                </div>
-              </div>
-              <div class="user-buttons">
-                <button class="btn">Login</button>
-              </div>
-          </div>
-        </div>
+      
+      <div class="container">
+        {% block pagecontent %}
+        {% endblock %}
       </div>
+
     </div>
   </body>
 </html>
