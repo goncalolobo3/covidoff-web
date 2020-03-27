@@ -47,8 +47,8 @@ COVIDOFF_USERS_PER_PAGE = os.environ.get('COVIDOFF_USERS_PER_PAGE', 25)
 # TODO document how to generate keys
 # 
 #
-COVIDOFF_SIGNING_KEY = os.environ.get('COVIDOFF_SIGNING_KEY', b'be5e8d34555c7d686c0c7bfe393becc83bbec8df2ab4aeae89d7af4046b1335d') or _raise(ImproperlyConfigured('COVIDOFF_SIGNING_KEY is not set'))
-COVIDOFF_VERIFY_KEY = os.environ.get('COVIDOFF_VERIFY_KEY', b'514e9c0b9beb7cf38f3c26f9d533f35e7ac80de8b757c84285933c8b1260e4b3') or _raise(ImproperlyConfigured('COVIDOFF_VERIFY_KEY is not set'))
+COVIDOFF_SIGNING_KEY = os.environ.get('COVIDOFF_SIGNING_KEY', 'be5e8d34555c7d686c0c7bfe393becc83bbec8df2ab4aeae89d7af4046b1335d') or _raise(ImproperlyConfigured('COVIDOFF_SIGNING_KEY is not set'))
+COVIDOFF_VERIFY_KEY = os.environ.get('COVIDOFF_VERIFY_KEY', '514e9c0b9beb7cf38f3c26f9d533f35e7ac80de8b757c84285933c8b1260e4b3') or _raise(ImproperlyConfigured('COVIDOFF_VERIFY_KEY is not set'))
 
 LOGIN_URL = '/account/login/'
 LOGIN_REDIRECT_URL = '/broadcast/'
@@ -191,3 +191,7 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+from django.core.serializers import BUILTIN_SERIALIZERS
+
+BUILTIN_SERIALIZERS['json'] = 'covidoff.serializers'

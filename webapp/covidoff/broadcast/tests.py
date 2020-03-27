@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 
-class TestCalls(TestCase):
+class TestBoradcast(TestCase):
 
 	def setUp(self):
 		
@@ -21,7 +21,12 @@ class TestCalls(TestCase):
 
 	def test_broadcast(self):
 
-		response = self.client.post(reverse('broadcast'), { 'text': 'Hello world' })
+		response = self.client.post(reverse('broadcast'), {
+			'title': 'Hello world',
+			'text': 'Olá, com UTF-8'
+		})
+
+		self.assertEqual(response.status_code, 302)
 
 	# def test_subscription(self):
 

@@ -7,11 +7,13 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.utils.dateformat import format
 from broadcast.models import Message
 from broadcast.models import Subscription
 from broadcast.forms import MessageForm
 from broadcast.forms import UserCreationForm
 from broadcast.forms import SubscriptionForm
+from io import StringIO
 import nacl.encoding
 import nacl.signing
 import logging
@@ -20,18 +22,36 @@ import json
 
 logger = logging.getLogger(__name__)
 
+def _encode_and_sign(obj):
+
+	formatted = "%d\n%s\n%s\n%s\n%s" % (obj.id, obj.title, obj.text, format(obj.creation_date, 'U'), 'gov')
+
+	return _signing_key().sign(formatted.encode('utf-8'))
+
+def _signing_key():
+
+	if settings.COVIDOFF_SIGNING_KEY is None:
+		raise Exception("COVIDOFF_SIGNING_KEY is not configured as an env variable. Configure it in order to broadcast messages.")
+
+	return nacl.signing.SigningKey(settings.COVIDOFF_SIGNING_KEY, nacl.encoding.HexEncoder)
+
+def _build_message(obj):
+
+	return {
+
+		'id': obj.id,
+		'entity': 'gov',
+		'title': obj.title,
+		'text': obj.text,
+		'time': format(obj.creation_date, 'U'),
+		'sign': _encode_and_sign(obj).signature.hex()
+	}
+
 class SubscriptionView(View):
 
 	def post(self, request):
 
-		try:
-			body = request.body.decode('utf-8')
-			body = json.loads(body)
-
-		except json.decoder.JSONDecodeError as ex:
-			return JsonResponse({ 'error': str(ex) }, status=400)
-
-		form = SubscriptionForm(body)
+		form = SubscriptionForm(request.body)
 
 		if not form.is_valid():
 			return JsonResponse(dict(form.errors.items()), status=422)
@@ -51,14 +71,14 @@ class SubscriptionView(View):
 			TopicArn=self.topic
 		)
 
-		# TODO create model instance with (device, endpoint)
 		Subscription.objects.create(**{
 			'device': form.cleaned_data['device'],
 			'endpoint': endpoint
 		})
 
 		return JsonResponse({
-			'pk': getattr(settings, 'COVIDOFF_VERIFY_KEY', None) or self._raise(ImproperlyConfigured('COVIDOFF_VERIFY_KEY is not set'))
+			'pk': getattr(settings, 'COVIDOFF_VERIFY_KEY', None) or self._raise(ImproperlyConfigured('COVIDOFF_VERIFY_KEY is not set')),
+			'messages': [_build_message(message) for message in Message.objects.all()]
 		})
 
 	@property
@@ -81,37 +101,35 @@ class BroadcastView(TemplateView):
 				'errors': form.errors.items()
 			}, status=422)
 
-		Message.objects.create(**{
+		obj = Message.objects.create(**{
+			'title': form.cleaned_data['title'],
 			'text': form.cleaned_data['text'],
 			'author': request.user
 		})
 
-		message = form.cleaned_data['text']
-		message = json.dumps({
-			'id': 'i39u434',
-			'content': 'A tua prima'
-		})
+		self._encode(obj)
 
-		# message = self._encode_and_sign(message)
-
-		# “id”: int@timestamp
-		# “content”: String
-		# "signature": String
-		# "purpose": String (htc | gov)
-
-		self._broadcast(message)
+		# self._broadcast(message)
 
 		return redirect('broadcast_ok')
 
-	def _encode_and_sign(self, message):
-		return self._signing_key().sign(message.encode('utf-8'))
+	def _encode(self, obj):
 
-	def _signing_key(self):
 
-		if settings.COVIDOFF_SIGNING_KEY is None:
-			raise Exception("COVIDOFF_SIGNING_KEY is not configured as an env variable. Configure it in order to broadcast messages.")
+		print(self._encode_and_sign(obj))
 
-		return nacl.signing.SigningKey(settings.COVIDOFF_SIGNING_KEY, nacl.encoding.HexEncoder)
+
+		# output = StringIO()
+		# message = json.dump({
+		# 	'id': obj.id,
+		# 	'entity': 'gov',
+		# 	'title': obj.title,
+		# 	'text': obj.text,
+		# 	'time': format(obj.creation_date, 'U'),
+		# 	'sign': self._encode_and_sign(obj)
+		# }, output, sort_keys=True, separators=(',', ':'), indent=0)
+
+		# return output.getvalue()
 
 	def _broadcast(self, message):
 
