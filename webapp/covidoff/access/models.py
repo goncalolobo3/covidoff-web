@@ -5,7 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from access.fields import SafeRandomField
 
-
 class UserManager(BaseUserManager):
 
     use_in_migrations = True

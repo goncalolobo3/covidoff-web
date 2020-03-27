@@ -14,48 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
-if settings.COVIDOFF_AUTHENTICATION_DEPLOY:
-    
-    urlpatterns = [
-        path('auth/', include('authnoop.urls')),
-    ]
-
-else:
-
-    urlpatterns = [
-        
-        path('account/', include('access.urls')),
-        path('admin/', admin.site.urls),
-        path('tracker/', include('tracker.urls')),
-    ]
-
-    # SDK authentication noop point
-    urlpatterns += [
-        path('auth/', include('authnoop.urls')),
-    ]
-
-    # Pedir chave pública
-
-    # Healtcare-speciifc URLs
-    if settings.COVIDOFF_HEALTHCARE_DEPLOY:
-        
-        urlpatterns += [
-            path('', RedirectView.as_view(url=settings.LOGIN_REDIRECT_URL, permanent=False)),
-        ]
-
-    # Government-speciifc URLs
-    if settings.COVIDOFF_GOVERNMENT_DEPLOY:
-        
-        urlpatterns += [
-            path('', RedirectView.as_view(url=settings.LOGIN_REDIRECT_URL, permanent=False)),
-            path('broadcast/', include('broadcast.urls')),
-            # path('announcement/', include('announcements.urls')),
-        ]
-
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', RedirectView.as_view(url=settings.LOGIN_REDIRECT_URL, permanent=False)),
+    path('account/', include('access.urls')),
+    path('auth/', include('authnoop.urls')),
+    path('broadcast/', include('broadcast.urls')),
+]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

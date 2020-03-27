@@ -2,12 +2,6 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorDict
 from django.forms.utils import ErrorList
-from django.core.exceptions import NON_FIELD_ERRORS
-from tracker.models import Device
-
-class DeviceForm(forms.Form):
-
-	uid = forms.CharField(max_length=256, required=True)
 
 class JsonForm:
 
@@ -96,18 +90,3 @@ class JsonForm:
 
 			if key in self.cleaned_data:
 				del self.cleaned_data[key]
-
-class MatchForm(JsonForm):
-
-	matcher = forms.CharField(max_length=256, required=True)
-	matchee = forms.CharField(max_length=256, required=True)
-
-	latitude = forms.DecimalField(max_digits=9, decimal_places=6, required=False)
-	longitude = forms.DecimalField(max_digits=9, decimal_places=6, required=False)
-
-	matcher_meta = forms.CharField(max_length=2048, required=False)
-	matchee_meta = forms.CharField(max_length=2048, required=False)	
-
-class FindForm(forms.Form):
-	
-	find = forms.CharField(max_length=256, required=True)

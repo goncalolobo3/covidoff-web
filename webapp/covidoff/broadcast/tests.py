@@ -21,8 +21,16 @@ class TestCalls(TestCase):
 
 	def test_broadcast(self):
 
-		# Government-only view
-		if not settings.COVIDOFF_GOVERNMENT_DEPLOY:
-			return
-
 		response = self.client.post(reverse('broadcast'), { 'text': 'Hello world' })
+
+	# def test_subscription(self):
+
+	# 	# Government-only view
+	# 	if not settings.COVIDOFF_GOVERNMENT_DEPLOY:
+	# 		return
+
+	# 	response = self.client.post(reverse('subscribe'), {
+	# 		'endpoint': 'arn:aws:sns:sa-east-1:494854379016:endpoint/GCM/covidoff-android/6c58628f-b073-3350-b2f3-803984511637'
+	# 	}, content_type='application/json')
+
+	# 	print(response)

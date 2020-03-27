@@ -13,46 +13,45 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 from django.core.exceptions import ImproperlyConfigured
 import os
 
-COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE = os.environ.get('COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE', 32768)
-
-COVIDOFF_DEPLOYMENT_TYPE = os.environ.get('COVIDOFF_DEPLOYMENT_TYPE', 'gov')
-
-if COVIDOFF_DEPLOYMENT_TYPE == 'htc':
-    COVIDOFF_HEALTHCARE_DEPLOY = True
-    COVIDOFF_GOVERNMENT_DEPLOY = False
-    COVIDOFF_AUTHENTICATION_DEPLOY = False
-
-elif COVIDOFF_DEPLOYMENT_TYPE == 'gov':
-    COVIDOFF_HEALTHCARE_DEPLOY = False
-    COVIDOFF_GOVERNMENT_DEPLOY = True
-    COVIDOFF_AUTHENTICATION_DEPLOY = False
-
-elif COVIDOFF_DEPLOYMENT_TYPE == 'auth':
-    COVIDOFF_HEALTHCARE_DEPLOY = False
-    COVIDOFF_GOVERNMENT_DEPLOY = False
-    COVIDOFF_AUTHENTICATION_DEPLOY = True
-
-else:
-    raise ImproperlyConfigured("Deployment type environment variable not found or invalid. Set COVIDOFF_DEPLOYMENT_TYPE to either healthcare deployment (htc) or government deployment (gov) in your environment.")
-
-COVIDOFF_MESSAGES_PER_PAGE = os.environ.get('COVIDOFF_MESSAGES_PER_PAGE', 25)
-COVIDOFF_USERS_PER_PAGE = os.environ.get('COVIDOFF_USERS_PER_PAGE', 25)
-
-COVIDOFF_TOPIC_NAME = os.environ.get('COVIDOFF_TOPIC_NAME', 'covidoff')
-
-if COVIDOFF_HEALTHCARE_DEPLOY:
-    LOGIN_REDIRECT_URL = '/tracker/'
-
-elif COVIDOFF_GOVERNMENT_DEPLOY:
-    LOGIN_REDIRECT_URL = '/broadcast/'
-
-COVIDOFF_SIGNING_KEY = os.environ.get('COVIDOFF_SIGNING_KEY', b'be5e8d34555c7d686c0c7bfe393becc83bbec8df2ab4aeae89d7af4046b1335d')
-COVIDOFF_VERIFY_KEY = os.environ.get('COVIDOFF_VERIFY_KEY', b'514e9c0b9beb7cf38f3c26f9d533f35e7ac80de8b757c84285933c8b1260e4b3')
-
-LOGIN_URL = '/account/login/'
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+def _raise(ex):
+    raise ex
+
+#
+# ARN for an SNS Topic.
+#
+# See https://sa-east-1.console.aws.amazon.com/sns/v3/home
+#
+COVIDOFF_SNS_TOPIC_ARN = os.environ.get('COVIDOFF_SNS_TOPIC_ARN', 'arn:aws:sns:sa-east-1:494854379016:covidoff-colombia') or _raise(ImproperlyConfigured('COVIDOFF_SNS_TOPIC_ARN is not set'))
+
+#
+# AWS Region name, where the SNS service is deployed.
+#
+COVIDOFF_AWS_REGION_NAME = os.environ.get('COVIDOFF_AWS_REGION_NAME', 'sa-east-1') or _raise(ImproperlyConfigured('COVIDOFF_SNS_TOPIC_ARN is not set'))
+
+#
+# Number of messages per page
+#
+COVIDOFF_MESSAGES_PER_PAGE = os.environ.get('COVIDOFF_MESSAGES_PER_PAGE', 25)
+
+#
+# Number of users per page
+#
+COVIDOFF_USERS_PER_PAGE = os.environ.get('COVIDOFF_USERS_PER_PAGE', 25)
+
+#
+# Signing and verification keys
+#
+# TODO document how to generate keys
+# 
+#
+COVIDOFF_SIGNING_KEY = os.environ.get('COVIDOFF_SIGNING_KEY', b'be5e8d34555c7d686c0c7bfe393becc83bbec8df2ab4aeae89d7af4046b1335d') or _raise(ImproperlyConfigured('COVIDOFF_SIGNING_KEY is not set'))
+COVIDOFF_VERIFY_KEY = os.environ.get('COVIDOFF_VERIFY_KEY', b'514e9c0b9beb7cf38f3c26f9d533f35e7ac80de8b757c84285933c8b1260e4b3') or _raise(ImproperlyConfigured('COVIDOFF_VERIFY_KEY is not set'))
+
+LOGIN_URL = '/account/login/'
+LOGIN_REDIRECT_URL = '/broadcast/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -76,27 +75,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'access',
+    'broadcast',
+    'authnoop'
 ]
 
-if COVIDOFF_AUTHENTICATION_DEPLOY:
-    INSTALLED_APPS += ['authnoop']
-
-else:
-
-    AUTH_USER_MODEL = 'access.User'
-
-    INSTALLED_APPS += [
-        'access',
-        'tracker'
-    ]
-
-    if COVIDOFF_HEALTHCARE_DEPLOY:
-        INSTALLED_APPS += ['qr_code']
-
-    if COVIDOFF_GOVERNMENT_DEPLOY:
-        INSTALLED_APPS += [
-            'broadcast'
-        ]
+AUTH_USER_MODEL = 'access.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,24 +112,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'covidoff.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DEBUG:
 
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': 'postgres',
-        # 'USER': 'postgres',
-        # 'PASSWORD': 'mysecretpassword',
-        # 'HOST': 'db',
-        # 'PORT': '5432',
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
 
+else:
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'PASSWORD': 'mysecretpassword',
+            'HOST': 'db',
+            'PORT': '5432',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

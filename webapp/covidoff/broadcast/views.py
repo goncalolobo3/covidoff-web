@@ -8,14 +8,66 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from broadcast.models import Message
+from broadcast.models import Subscription
 from broadcast.forms import MessageForm
 from broadcast.forms import UserCreationForm
+from broadcast.forms import SubscriptionForm
 import nacl.encoding
 import nacl.signing
 import logging
+import boto3
+import json
 
 logger = logging.getLogger(__name__)
 
+class SubscriptionView(View):
+
+	def post(self, request):
+
+		try:
+			body = request.body.decode('utf-8')
+			body = json.loads(body)
+
+		except json.decoder.JSONDecodeError as ex:
+			return JsonResponse({ 'error': str(ex) }, status=400)
+
+		form = SubscriptionForm(body)
+
+		if not form.is_valid():
+			return JsonResponse(dict(form.errors.items()), status=422)
+
+		endpoint = form.cleaned_data['endpoint']
+		topic = self.topic
+
+		client = boto3.client('sns', region_name='sa-east-1')
+
+		response = client.create_topic(
+			Name='covidoff',
+		)
+
+		subscription = client.subscribe(
+			Protocol='application',
+			Endpoint=endpoint,
+			TopicArn=self.topic
+		)
+
+		# TODO create model instance with (device, endpoint)
+		Subscription.objects.create(**{
+			'device': form.cleaned_data['device'],
+			'endpoint': endpoint
+		})
+
+		return JsonResponse({
+			'pk': getattr(settings, 'COVIDOFF_VERIFY_KEY', None) or self._raise(ImproperlyConfigured('COVIDOFF_VERIFY_KEY is not set'))
+		})
+
+	@property
+	def topic(self):
+		return getattr(settings, 'COVIDOFF_SNS_TOPIC_ARN', None) or self._raise(ImproperlyConfigured('COVIDOFF_SNS_TOPIC_ARN is not set'))
+
+	def _raise(self, message):
+		raise ex
+	
 class BroadcastView(TemplateView):
 	template_name = 'broadcast.html'
 
@@ -35,7 +87,17 @@ class BroadcastView(TemplateView):
 		})
 
 		message = form.cleaned_data['text']
-		message = self._encode_and_sign(message)
+		message = json.dumps({
+			'id': 'i39u434',
+			'content': 'A tua prima'
+		})
+
+		# message = self._encode_and_sign(message)
+
+		# “id”: int@timestamp
+		# “content”: String
+		# "signature": String
+		# "purpose": String (htc | gov)
 
 		self._broadcast(message)
 
@@ -53,20 +115,13 @@ class BroadcastView(TemplateView):
 
 	def _broadcast(self, message):
 
-		import boto3
-
 		# Sao Paulo
-		client = boto3.client('sns', region_name='sa-east-1')	
-
-		# See: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sns.html#SNS.Client.create_topic
-		topic = client.create_topic(
-			Name=settings.COVIDOFF_TOPIC_NAME
-		)
+		client = boto3.client('sns', region_name='sa-east-1')
 
 		# See: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sns.html#SNS.PlatformEndpoint.publish
 		client.publish(
-			TopicArn=topic['TopicArn'],
-			Message=message.hex()
+			TargetArn=settings.COVIDOFF_SNS_TOPIC_ARN,
+			Message=message
 		)
 
 class KeyView(View):

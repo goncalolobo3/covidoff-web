@@ -9,7 +9,10 @@ class Message(models.Model):
 		on_delete=models.CASCADE
 	)
 
-	text = models.TextField(max_length=getattr(settings, 'COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE', 32768),
+	title = models.TextField(max_length=255,
+		help_text=_('Broadcast message title'))
+
+	text = models.TextField(max_length=getattr(settings, 'COVIDOFF_MAXIMUM_BROADCAST_MESSAGE_SIZE', 4096),
 		help_text=_('Broadcast message text'))
 
 	creation_date = models.DateTimeField(auto_now_add=True,
@@ -17,3 +20,11 @@ class Message(models.Model):
 
 	last_update = models.DateTimeField(auto_now=True,
 		help_text=_('Last update'))
+
+class Subscription(models.Model):
+
+	endpoint = models.TextField(max_length=255,
+		help_text=_('Subscription endpoint ARN'))
+
+	device = models.TextField(max_length=255,
+		help_text=_('Subscription device ID'))
