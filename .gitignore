@@ -1,4 +1,5 @@
 venv/
+webapp/covidoff/static/
 .DS_Store
 
 # Created by https://www.gitignore.io
