@@ -14,6 +14,71 @@ Now you can access the application at <https://localhost> and the admin site at 
 
 The implementation either shows government- or healthcare-related views, depending on the settings. In order to switch between the two, change `COVIDOFF_HEALTHCARE_DEPLOY` and `COVIDOFF_GOVERNMENT_DEPLOY` to `True` or `False`, depending on which should be enabled. Notice that if the two are equal (e.g. both `True` or both `False`), the server will refuse to start.
 
+### Setup
+
+`Backend`, configure `AWS`
+
+1. Run `aws config`
+2. 
+
+`Android`, configure `Firebase`
+
+1. Go [here](https://console.firebase.google.com/)
+2. Click "Add project"
+3. Enter Project name and click Continue
+4. Choose whether you want analytics on your app, and, if so, what account to use
+5. Finalize the setup by clicking "Create project"
+6. Continue
+7. Next to "Project overview", click the Settings wheel and then "Project settings"
+8. Go to Cloud messaging
+9. Find the setting Server key and copy it. Keep it. You'll need it later.
+
+1. Go [here](https://sa-east-1.console.aws.amazon.com/sns/v3/home) and click "Start with an overview"
+2. Under "Mobile", choose "Push notifications"
+3. Click "Create platform application"
+4. Enter your application name and select "Firebase Cloud Messaging (FCM)" from the "Push notification platform" menu
+5. Paste the Firebase key you copied earlier on API Key
+6. Click "Create platform application"
+7. Select your `ARN` and keep it, for now. Example:
+arn:aws:sns:sa-east-1:494854379016:app/GCM/covidoff-android
+
+`iOS`, configure `Apple Push Notification Service`
+
+1. Go to your Apple Developer account
+2. Go to "Certificates, Identifiers & Profiles"
+3. Select "Identifiers" from the left menu
+4. Select your app from the Identifier list (create a new one if it's not listed)
+5. Under "Capabilities", look for "Push notifications" and click "Edit"
+6. Download the "Production SSL Certificate"
+7. At the top of the page, look for `App ID Prefix` and keep that ID
+
+(KeyChain)
+7. Open the certificate with KeyChain, by clicking on it
+8. When prompted to add the certificate, click "Add"
+9. Copy the `App ID Prefix` from the previous step and enter it in the Search bar. You should see a single certificate on the list
+10. Expand the certificate by clicking on the arrow
+11. Select both lines
+12. Right-click and select "Export 2 items..."
+13. Make sure that the file format is `.p12`
+14. Choose a password, if you want (it's optional)
+
+1. Go [here](https://sa-east-1.console.aws.amazon.com/sns/v3/home) and click "Start with an overview"
+2. Under "Mobile", choose "Push notifications"
+3. Click "Create platform application"
+4. Enter your application name and select "Apple iOS/VoIP/Mac" from the "Push notification platform" menu
+5. Under "Push certificate type" select "iOS push certificate"
+6. Click "Choose file" and look for the certificate the we downloaded on the previous step. Enter your password, if you set any.
+7. Cick "Load credentials from file"
+8. "Create platform application"
+(Review process or link tutorial)
+(Also setup Cognito)
+
+
+
+
+
+
+
 ## Server API
 
 The server API is separated in three components:
@@ -82,15 +147,3 @@ Note: the absence of required arguments is accepted at this point, but it won't 
 | 400  | {"error": "<description>"}                                                                                                                                                                                                                        | JSON format is invalid             |
 | 422  | {"longitude": ["Enter a number."]}                                                                                                                                                                                                                | JSON is valid, but the data is not |
 | 200  | {<br>"id": 10,<br>"matcher": "id",<br>"matchee": "id",<br>"latitude": "114.2999353",<br>"longitude": "114.2999353",<br>"timestamp": "2020-03-23T22:33:57.692Z",<br>"matcher_meta": "meta information",<br>"matchee_meta": "meta information"<br>} | OK                                 |,
-
-
-## License
-
-Copyright 2020 tech4COVID19
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
