@@ -61,11 +61,11 @@ class SubscriptionView(View):
 
 		client = boto3.client('sns', region_name='sa-east-1')
 
-		response = client.create_topic(
-			Name='covidoff',
-		)
-
 		try:
+
+			response = client.create_topic(
+				Name='covidoff',
+			)
 
 			subscription = client.subscribe(
 				Protocol='application',
