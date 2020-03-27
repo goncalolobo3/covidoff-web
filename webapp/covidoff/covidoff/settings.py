@@ -187,10 +187,10 @@ STATIC_URL = '/static/'
 
 # Add these new lines
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'covidoff/static'),
 )
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static-files')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 from django.core.serializers import BUILTIN_SERIALIZERS
 
