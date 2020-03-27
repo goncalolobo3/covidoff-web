@@ -1,5 +1,10 @@
 FROM python:3.7
 
+# AWS setup
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
+
 # Add code
 ADD ./covidoff /srv/covidoff
 
