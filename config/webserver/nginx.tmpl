@@ -71,7 +71,7 @@ http {
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # ie defaults minus SSLv3
 
         location /static {
-            alias /srv/static-files;
+            alias /srv/covidoff/static;
 
             # http://stackoverflow.com/q/19213510/1346257
             include /etc/nginx/mime.types;
