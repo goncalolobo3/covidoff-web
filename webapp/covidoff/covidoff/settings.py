@@ -60,7 +60,7 @@ LOGIN_REDIRECT_URL = '/broadcast/'
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '1+*q1@5$+r)rffyvefj=wgv@c%1*-!hfb0xz%6&e4v#)_ek@kt')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
