@@ -13,7 +13,6 @@ from broadcast.models import Subscription
 from broadcast.forms import MessageForm
 from broadcast.forms import UserCreationForm
 from broadcast.forms import SubscriptionForm
-from io import StringIO
 import nacl.encoding
 import nacl.signing
 import logging
@@ -63,10 +62,6 @@ class SubscriptionView(View):
 
 		try:
 
-			response = client.create_topic(
-				Name='covidoff',
-			)
-
 			subscription = client.subscribe(
 				Protocol='application',
 				Endpoint=endpoint,
@@ -115,29 +110,13 @@ class BroadcastView(TemplateView):
 			'author': request.user
 		})
 
-		self._encode(obj)
-
-		# self._broadcast(message)
+		self._broadcast(self._encode_obj(obj))
 
 		return redirect('broadcast_ok')
 
-	def _encode(self, obj):
+	def _encode_obj(self, obj):
 
-
-		print(self._encode_and_sign(obj))
-
-
-		# output = StringIO()
-		# message = json.dump({
-		# 	'id': obj.id,
-		# 	'entity': 'gov',
-		# 	'title': obj.title,
-		# 	'text': obj.text,
-		# 	'time': format(obj.creation_date, 'U'),
-		# 	'sign': self._encode_and_sign(obj)
-		# }, output, sort_keys=True, separators=(',', ':'), indent=0)
-
-		# return output.getvalue()
+		return json.dumps(_build_message(obj), separators=(',', ':'))
 
 	def _broadcast(self, message):
 
