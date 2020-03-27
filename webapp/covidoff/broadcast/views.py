@@ -65,16 +65,24 @@ class SubscriptionView(View):
 			Name='covidoff',
 		)
 
-		subscription = client.subscribe(
-			Protocol='application',
-			Endpoint=endpoint,
-			TopicArn=self.topic
-		)
+		try:
 
-		Subscription.objects.create(**{
-			'device': form.cleaned_data['device'],
-			'endpoint': endpoint
-		})
+			subscription = client.subscribe(
+				Protocol='application',
+				Endpoint=endpoint,
+				TopicArn=self.topic
+			)
+
+			Subscription.objects.create(**{
+				'device': form.cleaned_data['device'],
+				'endpoint': endpoint
+			})
+			
+		except ex:
+
+			return JsonResponse({
+				'errors': [ex]
+			}, status=422)
 
 		return JsonResponse({
 			'pk': getattr(settings, 'COVIDOFF_VERIFY_KEY', None) or self._raise(ImproperlyConfigured('COVIDOFF_VERIFY_KEY is not set')),
