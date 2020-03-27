@@ -77,11 +77,11 @@ class SubscriptionView(View):
 				'device': form.cleaned_data['device'],
 				'endpoint': endpoint
 			})
-			
-		except ex:
+
+		except Exception as ex:
 
 			return JsonResponse({
-				'errors': [ex]
+				'errors': [str(ex)]
 			}, status=422)
 
 		return JsonResponse({

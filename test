@@ -6,9 +6,7 @@
 #curl --request POST http://54.94.178.165/auth/callback/
 #curl --header "Content-Type: application/json" --request POST --data '{}' http://localhost/tracker/match/ -L -k
 
-#curl --request POST http://127.0.0.1:8000/broadcast/subscribe/ --header "Content-Type: application/json" --data '{"endpoint": "asd", "device": "bcd"}'
-
-curl --request POST http://54.94.178.165:8000/broadcast/subscribe/ --header "Content-Type: application/json" --data '{"endpoint": "asd", "device": "bcd"}'
-
+curl --request POST http://127.0.0.1:8000/broadcast/subscribe/ --header "Content-Type: application/json" --data '{"endpoint": "asd", "device": "bcd"}'
+# curl --request POST http://54.94.178.165:8000/broadcast/subscribe/ --header "Content-Type: application/json" --data '{"endpoint": "asd", "device": "bcd"}'
 
 echo
