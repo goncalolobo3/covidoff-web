@@ -26,6 +26,7 @@ urlpatterns = [
     path('account/', include('access.urls')),
     path('auth/', include('authnoop.urls')),
     path('broadcast/', include('broadcast.urls')),
+    path('report/', include('reports.urls'))
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

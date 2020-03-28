@@ -49,6 +49,8 @@ else
     python3 /srv/${DJANGO_PROJECT_NAME}/manage.py collectstatic --noinput -v 3
 fi
 
+echo "==> Django setup, executing: loaddata"
+python3 /srv/${DJANGO_PROJECT_NAME}/manage.py loaddata diagnosticchoices
 
 #####
 # Start uWSGI

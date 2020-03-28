@@ -1,0 +1,110 @@
+[
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 1,
+    "fields": {
+        "key": "not",
+        "description": "Not Tested",
+        "language": "en"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 2,
+    "fields": {
+        "key": "pos",
+        "description": "Positive",
+        "language": "en"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 3,
+    "fields": {
+        "key": "neg",
+        "description": "Negative",
+        "language": "en"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 4,
+    "fields": {
+        "key": "rec",
+        "description": "Recovered",
+        "language": "en"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 5,
+    "fields": {
+        "key": "not",
+        "description": "N\u00e3o Testado",
+        "language": "pt"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 6,
+    "fields": {
+        "key": "pos",
+        "description": "Positivo",
+        "language": "pt"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 7,
+    "fields": {
+        "key": "neg",
+        "description": "Negativo",
+        "language": "pt"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 8,
+    "fields": {
+        "key": "rec",
+        "description": "Recuperado",
+        "language": "pt"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 9,
+    "fields": {
+        "key": "not",
+        "description": "No Probado",
+        "language": "es"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 10,
+    "fields": {
+        "key": "pos",
+        "description": "Positivo",
+        "language": "es"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 11,
+    "fields": {
+        "key": "neg",
+        "description": "Negativo",
+        "language": "es"
+    }
+},
+{
+    "model": "reports.diagnosticchoices",
+    "pk": 12,
+    "fields": {
+        "key": "rec",
+        "description": "Recuperado",
+        "language": "es"
+    }
+}
+]

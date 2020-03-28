@@ -20,11 +20,3 @@ class Message(models.Model):
 
 	last_update = models.DateTimeField(auto_now=True,
 		help_text=_('Last update'))
-
-class Subscription(models.Model):
-
-	endpoint = models.TextField(max_length=255,
-		help_text=_('Subscription endpoint ARN'))
-
-	device = models.TextField(max_length=255,
-		help_text=_('Subscription device ID'))

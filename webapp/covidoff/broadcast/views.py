@@ -1,7 +1,5 @@
 from django.views.generic import TemplateView
 from django.views.generic import View
-from django.http import HttpResponse
-from django.utils.decorators import method_decorator
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.conf import settings
@@ -9,10 +7,9 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.utils.dateformat import format
 from broadcast.models import Message
-from broadcast.models import Subscription
 from broadcast.forms import MessageForm
-from broadcast.forms import UserCreationForm
 from broadcast.forms import SubscriptionForm
+from reports.models import Device
 import nacl.encoding
 import nacl.signing
 import logging
@@ -68,9 +65,11 @@ class SubscriptionView(View):
 				TopicArn=self.topic
 			)
 
-			Subscription.objects.create(**{
-				'device': form.cleaned_data['device'],
-				'endpoint': endpoint
+			Device.objects.update_or_create(**{
+				'uid': form.cleaned_data['device'],
+				'defaults': {
+					'arn': endpoint
+				}
 			})
 
 		except Exception as ex:
