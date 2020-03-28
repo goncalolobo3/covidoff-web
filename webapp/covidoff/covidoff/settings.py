@@ -77,7 +77,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'access',
     'broadcast',
-    'authnoop'
+    'authnoop',
     'bootstrap4',
 ]
 
