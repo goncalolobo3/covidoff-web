@@ -86,21 +86,42 @@ class RecoverView(TemplateView):
 				'user': user
 			})
 
-			# TODO send password recovery email with ticket.uid
-			logger.warning('Sending email is not implemented yet')
-
+			self._send_recovery_email(ticket)
+			
 		return redirect(reverse('recover_password_ok'))
+
+	def _send_recovery_email(self, ticket):
+
+		# TODO
+		#
+		# Send the recovery email here.
+		# In that email, include a URL that links back to reverse('recover_password_callback')
+		# Use ticket.uid as an argument to that URL (adapt the URL to accomodate an argument).
+		# That ticket.uid, should be sent in the email with the link.
+		#
+		# When the email is openned and the link is clicked, it redirects to reverse('recover_password_callback', uid=ticket.uid)
+		#
+		# You're done here.
+		logger.warning('Sending email is not implemented yet')
 
 class RecoverOkView(TemplateView):
 	template_name = 'recover_password_ok.html'
 
-#
-# TODO Recover from email recovery ticket. Keep in mind 
-#      that tickets should expire after a while
-#
-#
 class RecoverCallbackView(TemplateView):
 	template_name = 'recover_password_callback.html'
+
+	def get(self, request):
+
+		# TODO
+		#
+		# This method takes an argument (uid).
+		# Check that the UID is not expired (e.g. less than 10 minutes old). If is is, return 404
+		#
+		# Return a page to prompt for a new password
+		# When the user enters the password, look for the matching UID on the database,
+		# get the corresponding user (e.g. ticket.user) and use user.set_password
+		#
+		pass
 
 class UsersView(TemplateView):
 	template_name = 'users.html'
