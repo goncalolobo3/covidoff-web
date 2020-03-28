@@ -99,7 +99,7 @@ class BroadcastView(TemplateView):
 		form = MessageForm(request.POST)
 
 		if not form.is_valid():
-
+			
 			return render(request, self.template_name, {
 				'errors': form.errors.items()
 			}, status=422)

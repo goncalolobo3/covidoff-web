@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'access',
     'broadcast',
     'authnoop'
+    'bootstrap4',
 ]
 
 AUTH_USER_MODEL = 'access.User'
